@@ -544,6 +544,7 @@ body {
 @media (max-width: 768px) {
   .card-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
   .site-main { width: 94%; margin: 2rem auto 1.5rem; padding: 1.8rem 1.2rem 1.5rem; }
+  .site-main::after { top: 14px; right: 14px; width: 10px; height: 10px; }
   .site-header a { font-size: 1.6rem; }
   .header-bell { width: 36px; height: 36px; }
   .header-collar { height: 24px; }
@@ -551,6 +552,7 @@ body {
 @media (max-width: 480px) {
   .card-grid { grid-template-columns: 1fr; }
   .site-main { width: 96%; margin: 1.5rem auto 1rem; padding: 1.4rem 1rem 1.2rem; border-radius: 14px 14px 12px 12px; }
+  .site-main::after { top: 10px; right: 10px; width: 8px; height: 8px; }
   .site-header { padding: 1.2rem 1rem 1.4rem; }
   .site-header a { font-size: 1.3rem; }
   .header-bell { width: 30px; height: 30px; }
@@ -601,13 +603,14 @@ const CATEGORY_NAMES = {
   'architecture': '架构模式', 'java': 'Java', 'jvm': 'JVM', 'spring': 'Spring',
   'database': '数据库', 'distributed': '分布式', 'computer-basics': '计算机基础',
   'spring-cloud-alibaba': 'Spring Cloud Alibaba', 'spring-cloud': 'Spring Cloud',
-  'mq': 'MQ', 'security': '安全框架', 'dev-tools': '开发工具', 'container': '容器 & 编排',
-  'cicd': 'CI/CD', 'http-server': 'HTTP服务器', 'monitoring': '监控 & 链路追踪',
-  'rpc': 'RPC框架', 'scheduling': '任务调度', 'sharding': '分库分表', 'cache': '缓存框架',
+  'mq': 'MQ', 'security': '安全', 'dev-tools': '开发工具', 'container': '容器 & 云原生',
+  'cicd': 'CI/CD', 'http-server': 'HTTP服务器', 'monitoring': '可观测性',
+  'rpc': 'RPC框架', 'scheduling': '任务调度', 'sharding': '分库分表', 'cache': '缓存',
   'data-sync': '数据同步与集成', 'workflow': '工作流引擎', 'concurrency': '并发框架',
-  'testing': '测试框架', 'database-optimization': '数据库方案与优化', 'json': 'JSON序列化',
+  'testing': '测试 & 代码质量', 'database-optimization': '数据库方案与优化', 'json': 'JSON序列化',
   'binary-serialization': '二进制序列化', 'logging': '日志框架', 'microservice': '微服务框架',
-  'storage': '存储', 'ai': 'AI'
+  'storage': '存储', 'ai': 'AI',
+  'design-patterns': '设计模式', 'search': '搜索', 'orm': 'ORM', 'api': 'API & 文档'
 };
 
 const CATEGORY_ICONS = {
@@ -617,7 +620,8 @@ const CATEGORY_ICONS = {
   'cicd': '🔄', 'http-server': '🌍', 'monitoring': '📊', 'rpc': '🔗', 'scheduling': '⏰',
   'sharding': '🧩', 'cache': '⚡', 'data-sync': '🔄', 'workflow': '📋', 'concurrency': '🏎️',
   'testing': '🧪', 'database-optimization': '🚀', 'json': '📋', 'binary-serialization': '📦',
-  'logging': '📝', 'microservice': '🔧', 'storage': '💾', 'ai': '🤖'
+  'logging': '📝', 'microservice': '🔧', 'storage': '💾', 'ai': '🤖',
+  'design-patterns': '🎯', 'search': '🔍', 'orm': '🗃️', 'api': '🔌'
 };
 
 let articles = [];

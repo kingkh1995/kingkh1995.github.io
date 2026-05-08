@@ -1,10 +1,42 @@
 [
   {
+    "id": "msdp",
+    "title": "微服务设计模式",
+    "category": "architecture",
+    "file": "architecture/msdp.md",
+    "date": "2026-05-09",
+    "summary": "系统梳理微服务架构中的核心设计模式，涵盖分解、集成、数据库、可观测性和横切关注点五大类别。"
+  },
+  {
+    "id": "docker",
+    "title": "Docker 命令速查与部署指南",
+    "category": "container",
+    "file": "container/docker.md",
+    "date": "2026-05-09",
+    "summary": "Docker 命令速查与实战部署，涵盖镜像、容器、网络、卷管理及 Docker Compose。"
+  },
+  {
+    "id": "tcpdump",
+    "title": "tcpdump 与 Wireshark 抓包实战",
+    "category": "dev-tools",
+    "file": "dev-tools/tcpdump.md",
+    "date": "2026-05-09",
+    "summary": "tcpdump 与 Wireshark 抓包实战指南，涵盖过滤表达式、TCP 标志位及问题定位。"
+  },
+  {
+    "id": "ddd",
+    "title": "DDD 领域驱动设计",
+    "category": "architecture",
+    "file": "architecture/ddd.md",
+    "date": "2023-03-21",
+    "summary": "总结自《阿里技术专家详解DDD系列》，涵盖 Domain Primitive、应用架构和架构设计要点。"
+  },
+  {
     "id": "dp",
     "title": "DDD 之 Domain Primitive",
     "category": "architecture",
     "file": "architecture/dp.md",
-    "date": "2025-02-21",
+    "date": "2022-05-31",
     "summary": "不是讲架构，而是一种比较好用的开发思想。"
   }
 ]

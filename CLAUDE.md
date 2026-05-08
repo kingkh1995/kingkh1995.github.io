@@ -12,7 +12,7 @@ Personal tech blog ("kaikoo的四次元口袋") published via GitHub Pages. Sing
 - `articles.json` — article manifest. Each entry: `id`, `title`, `category` (English dir name), `file` (relative path to .md), `date` (ISO), `summary`.
 - `*.md` — articles with YAML front matter (`---` delimited title/date/category/summary), stored in English-named category dirs (`architecture/`, `java/`, etc.).
 - `assets/` — images and static files.
-- `techs.md` — personal category taxonomy reference, not consumed by the site.
+- `techs.md` — personal category taxonomy. Consult this file when choosing or creating a category for an article; it defines the canonical category hierarchy.
 
 ## Routing
 
@@ -47,9 +47,29 @@ GitHub Actions workflow in `.github/workflows/static.yml` deploys entire repo to
 
 ## Adding Content
 
-1. Write `.md` article with YAML front matter in the appropriate category dir
-2. Add entry to `articles.json` with matching `category`, `file`, and `id`
-3. If new category, add mapping to `CATEGORY_NAMES` and icon to `CATEGORY_ICONS` in `index.html`
+1. Determine the article's category by consulting `techs.md` — the canonical category taxonomy. Use the closest matching category (the section header in `techs.md` maps to a directory name)
+2. Write `.md` article with YAML front matter in the appropriate category dir
+3. Add entry to `articles.json` with matching `category`, `file`, and `id`
+4. If new category, add mapping to `CATEGORY_NAMES` and icon to `CATEGORY_ICONS` in `index.html`. Also ensure `techs.md` covers this technology area
+5. If new category dir, create the directory
+6. Check and fix issues before finalizing: punctuation, typos, grammar, terminology, markdown format consistency, and text polishing — without adding new content
+
+### Incoming Articles
+
+Raw `.md` files may appear in the repo root. Before integrating:
+- Remove navigation links (`# [首页](/blog/)`) and redundant title blockquotes
+- Fix image paths to be relative from root (e.g., `assets/...` not `/blog/assets/...`)
+- Move to the correct category dir, delete the original from root
+
+### Article Formatting Rules
+
+- Only use h2–h4 headings (`##`, `###`, `####`); never h1 or h5+
+- Chinese text uses Chinese punctuation（：、，。）；English terms within Chinese prose get a space on each side
+- Use `地` before verbs (尽可能地), `的` before nouns (精准定义的)
+- Use `、` for enumeration in Chinese, not `，` between list items
+- `、和` is redundant — use `A、B 和 C` or `A、B、C`
+- Technical converter/transformer terms use `转换器`, not `转化器`
+- Pattern name: `Builder 模式` not `build 模式`
 
 ## Gotchas
 
