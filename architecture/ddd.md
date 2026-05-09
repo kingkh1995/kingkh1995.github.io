@@ -1,10 +1,3 @@
----
-title: DDD 领域驱动设计
-category: architecture
-date: 2023-03-21
-summary: 总结自《阿里技术专家详解DDD系列》，涵盖 Domain Primitive、应用架构和架构设计要点。
----
-
 > 总结自《阿里技术专家详解 DDD 系列》
 
 ## Domain Primitive（DP）

@@ -1,10 +1,3 @@
----
-title: DDD 之 Domain Primitive
-category: architecture
-date: 2022-05-31
-summary: 不是讲架构，而是一种比较好用的开发思想。
----
-
 ## Java Bean
 
 * 所有属性为 `private`

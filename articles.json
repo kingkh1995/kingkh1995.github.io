@@ -1,5 +1,13 @@
 [
   {
+    "id": "claude-code-superpowers-openspec",
+    "title": "Claude Code + OpenSpec + Superpowers 实战指南",
+    "category": "ai",
+    "file": "ai/claude-code-superpowers-openspec.md",
+    "date": "2026-05-09",
+    "summary": "从 Claude Code 到 Superpowers 再到 OpenSpec，逐层拆解三者的核心流程、各自短板，以及如何组合使用让 AI 生成更可靠、更可维护的代码。"
+  },
+  {
     "id": "msdp",
     "title": "微服务设计模式",
     "category": "architecture",

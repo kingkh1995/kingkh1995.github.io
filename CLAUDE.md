@@ -10,7 +10,7 @@ Personal tech blog ("kaikoo的四次元口袋") published via GitHub Pages. Sing
 
 - `index.html` — the entire app: HTML structure + inline CSS + inline JS. All rendering, routing, and styling in one file.
 - `articles.json` — article manifest. Each entry: `id`, `title`, `category` (English dir name), `file` (relative path to .md), `date` (ISO), `summary`.
-- `*.md` — articles with YAML front matter (`---` delimited title/date/category/summary), stored in English-named category dirs (`architecture/`, `java/`, etc.).
+- `*.md` — article body (markdown, no front matter). All metadata is in `articles.json`. Stored in English-named category dirs (`architecture/`, `java/`, etc.). Category dirs are created as needed to match `techs.md` sections; some dirs may exist preemptively without articles yet.
 - `assets/` — images and static files.
 - `techs.md` — personal category taxonomy. Consult this file when choosing or creating a category for an article; it defines the canonical category hierarchy.
 
@@ -19,7 +19,7 @@ Personal tech blog ("kaikoo的四次元口袋") published via GitHub Pages. Sing
 Hash-based SPA with three route patterns:
 - `#/` → home: category card grid (only categories with articles shown)
 - `#/<category>` → category page: article list sorted by date desc
-- `#/article/<category>/<id>` → article page: fetches .md, parses front matter, renders via marked.js
+- `#/article/<category>/<id>` → article page: fetches .md, renders via marked.js (metadata from articles.json)
 
 Category dir names (English) and Chinese display names are mapped in `CATEGORY_NAMES` constant; category emoji icons in `CATEGORY_ICONS`.
 
@@ -48,8 +48,9 @@ GitHub Actions workflow in `.github/workflows/static.yml` deploys entire repo to
 ## Adding Content
 
 1. Determine the article's category by consulting `techs.md` — the canonical category taxonomy. Use the closest matching category (the section header in `techs.md` maps to a directory name)
-2. Write `.md` article with YAML front matter in the appropriate category dir
-3. Add entry to `articles.json` with matching `category`, `file`, and `id`
+    - Section → dir name convention: English, lowercase, hyphenated (e.g., "AI & 新兴技术" → `ai/`, "容器 & 云原生" → `container/`, "开发工具" → `dev-tools/`)
+2. Write `.md` article (markdown body only, no front matter) in the appropriate category dir
+3. Add entry to `articles.json` with `id`, `title`, `category`, `file`, `date`, and `summary` — this is the single source of metadata
 4. If new category, add mapping to `CATEGORY_NAMES` and icon to `CATEGORY_ICONS` in `index.html`. Also ensure `techs.md` covers this technology area
 5. If new category dir, create the directory
 6. Check and fix issues before finalizing: punctuation, typos, grammar, terminology, markdown format consistency, and text polishing — without adding new content

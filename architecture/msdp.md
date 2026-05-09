@@ -1,10 +1,3 @@
----
-title: 微服务设计模式
-category: architecture
-date: 2026-05-09
-summary: 系统梳理微服务架构中的核心设计模式，涵盖分解、集成、数据库、可观测性和横切关注点五大类别。
----
-
 ![](assets/design-patterns.png)
 
 ### 分解模式 (Decomposition Patterns)

@@ -427,6 +427,7 @@ body {
   background: linear-gradient(90deg, #FFFDE7 0%, #FFFEF5 100%);
   border-radius: 0 8px 8px 0;
   color: #666;
+  overflow-wrap: break-word;
 }
 .article-content blockquote p { margin-bottom: 0.3rem; }
 .article-content hr { border: none; border-top: 2px dashed #e0e0e0; margin: 2rem 0; }
@@ -454,19 +455,24 @@ body {
   border-radius: 4px;
   color: var(--dora-blue-dark);
   font-weight: 500;
+  word-break: break-all;
 }
 .article-content pre code {
   background: transparent;
   padding: 0;
   color: #E0E0E0;
 }
-.article-content table {
-  border-collapse: collapse;
-  width: 100%;
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin: 1.2rem 0;
   border-radius: 8px;
-  overflow: hidden;
   box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+.table-scroll table {
+  border-collapse: collapse;
+  min-width: 100%;
+  margin: 0;
 }
 .article-content th, .article-content td {
   border: 1px solid #eee;
@@ -598,6 +604,16 @@ if (typeof marked === 'undefined' || typeof marked.parse !== 'function' || typeo
   throw new Error('marked.js not loaded or API incompatible');
 }
 marked.setOptions({ breaks: false, gfm: true });
+marked.use({
+  hooks: {
+    postprocess(html) {
+      html = html.replace(/<a /g, '<a target="_blank" rel="noopener" ');
+      html = html.replace(/<table>/g, '<div class="table-scroll"><table>');
+      html = html.replace(/<\/table>/g, '</table></div>');
+      return html;
+    }
+  }
+});
 
 const CATEGORY_NAMES = {
   'architecture': '架构模式', 'java': 'Java', 'jvm': 'JVM', 'spring': 'Spring',
@@ -694,19 +710,6 @@ function renderCategory(category) {
   document.getElementById('app').innerHTML = html;
 }
 
-function parseFrontMatter(md) {
-  const lines = md.split('\n');
-  if (lines[0].trim() !== '---') return { meta: {}, body: md };
-  const end = lines.indexOf('---', 1);
-  if (end === -1) return { meta: {}, body: md };
-  const meta = {}, fmLines = lines.slice(1, end);
-  fmLines.forEach(line => {
-    const colon = line.indexOf(':');
-    if (colon > 0) meta[line.slice(0, colon).trim()] = line.slice(colon + 1).trim();
-  });
-  return { meta, body: lines.slice(end + 1).join('\n') };
-}
-
 let articleRequestId = 0;
 
 async function renderArticle(category, id) {
@@ -721,8 +724,7 @@ async function renderArticle(category, id) {
     if (!resp.ok) throw new Error('Failed to load article: ' + article.file + ' (HTTP ' + resp.status + ')');
     if (requestId !== articleRequestId) return;
     const md = await resp.text();
-    const { body } = parseFrontMatter(md);
-    html += '<div class="article-content">' + marked.parse(body) + '</div>';
+    html += '<div class="article-content">' + marked.parse(md) + '</div>';
   } catch (e) {
     if (requestId !== articleRequestId) return;
     console.error('Article render error:', e);
