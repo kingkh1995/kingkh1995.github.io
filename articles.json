@@ -1,5 +1,13 @@
 [
   {
+    "id": "jvm-tuning",
+    "title": "JVM 诊断与调优：从命令速查到现网实战",
+    "category": "jvm",
+    "file": "jvm/jvm-tuning.md",
+    "date": "2026-05-09",
+    "summary": "JVM 参数速查、GC 收集器选型（G1/ZGC/Shenandoah）、JDK 命令行工具速查、调优流程与现网实战案例，面向有基础的技术开发。"
+  },
+  {
     "id": "claude-code-superpowers-openspec",
     "title": "Claude Code + OpenSpec + Superpowers 实战指南",
     "category": "ai",

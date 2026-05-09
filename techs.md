@@ -90,7 +90,7 @@
 - 参数调优
 - CDS & AOT（AppCDS, GraalVM Native Image）
 - 命令行工具
-    - jps, jstat, jstack, jmap, jhat, jinfo
+    - jps, jstat, jinfo, jmap, jstack, jcmd
     - top -H, vmstat, iostat, perf
     - Arthas
 - GUI 工具

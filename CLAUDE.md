@@ -8,7 +8,7 @@ Personal tech blog ("kaikoo的四次元口袋") published via GitHub Pages. Sing
 
 ## Architecture
 
-- `index.html` — the entire app: HTML structure + inline CSS + inline JS. All rendering, routing, and styling in one file.
+- `index.html` — the entire app: HTML structure + inline CSS + inline JS. All rendering, routing, and styling in one file. `marked.js` postprocess hook adds `target="_blank"` to links and wraps `<table>` in `<div class="table-scroll">` for mobile scrolling.
 - `articles.json` — article manifest. Each entry: `id`, `title`, `category` (English dir name), `file` (relative path to .md), `date` (ISO), `summary`.
 - `*.md` — article body (markdown, no front matter). All metadata is in `articles.json`. Stored in English-named category dirs (`architecture/`, `java/`, etc.). Category dirs are created as needed to match `techs.md` sections; some dirs may exist preemptively without articles yet.
 - `assets/` — images and static files.
@@ -31,7 +31,7 @@ Doraemon-themed CSS custom properties in `:root`:
 - `--dora-red` / `--dora-red-dark` — collar/nose/tail
 - `--dora-belly` (#FFFEF9) — content area off-white
 
-Font: ZCOOL KuaiLe (self-hosted via `assets/ZCOOLKuaiLe.ttf` + `@font-face`) used for site title, subtitle, category names, article titles, and article h1. Body text uses system sans-serif stack. Responsive: 3-col card grid → 2-col at 768px → 1-col at 480px.
+Font: ZCOOL KuaiLe (self-hosted via `assets/ZCOOLKuaiLe.ttf` + `@font-face`) used for site title, subtitle, category names, article titles, and article h1. Body text uses system sans-serif stack. Responsive: 5-col card grid → 3-col at 768px → 2-col at 480px.
 
 ## Local Dev
 
@@ -78,3 +78,4 @@ Raw `.md` files may appear in the repo root. Before integrating:
 - `.gitignore` blocks `/docs/` — force-add with `-f` if docs changes must be committed
 - `escapeHtml()` must be used on all data from `articles.json` before inserting into innerHTML
 - The tail back-to-top button uses `bottom`/`opacity` transitions — do not add `transform` animations to it
+- Mobile overflow: wide tables are auto-wrapped in `.table-scroll` (scrollable container). Long inline code needs `word-break: break-all`; blockquotes need `overflow-wrap: break-word` — check these CSS rules when content overflows on mobile
