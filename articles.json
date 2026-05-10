@@ -1,5 +1,13 @@
 [
   {
+    "id": "oh-my-openagent-usage-guide",
+    "title": "Oh My OpenAgent 场景使用指南",
+    "category": "ai",
+    "file": "ai/oh-my-openagent-usage-guide.md",
+    "date": "2026-05-10",
+    "summary": "Oh My OpenAgent 十大使用场景详解，以及仅 OpenCode Go 订阅下的最佳模型配置实践。"
+  },
+  {
     "id": "jvm-tuning",
     "title": "JVM 诊断与调优：从命令速查到现网实战",
     "category": "jvm",

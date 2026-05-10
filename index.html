@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kaikoo的四次元口袋</title>
-<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<link rel="preload" href="assets/ZCOOLKuaiLe.ttf" as="font" type="font/ttf" crossorigin>
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js" crossorigin="anonymous"></script>
 <style>
 @font-face {
   font-family: 'ZCOOL KuaiLe';
@@ -42,6 +43,8 @@ body {
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 /* ====== Floating Sparkles ====== */
@@ -55,30 +58,30 @@ body {
 .sparkle {
   position: absolute;
   width: 6px; height: 6px;
-  background: var(--dora-yellow-glow);
+  background: radial-gradient(circle, #FFF 0%, var(--dora-yellow-glow) 40%, var(--dora-yellow) 100%);
   border-radius: 50%;
   animation: floatUp 10s linear infinite;
   opacity: 0;
+  box-shadow: 0 0 5px 1px rgba(255, 213, 79, 0.45);
+  will-change: transform, opacity;
 }
-.sparkle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 11s; }
-.sparkle:nth-child(2) { left: 25%; animation-delay: 2s; animation-duration: 9s; width: 4px; height: 4px; }
-.sparkle:nth-child(3) { left: 40%; animation-delay: 4s; animation-duration: 12s; }
-.sparkle:nth-child(4) { left: 55%; animation-delay: 1s; animation-duration: 10s; width: 3px; height: 3px; }
-.sparkle:nth-child(5) { left: 70%; animation-delay: 5s; animation-duration: 13s; }
-.sparkle:nth-child(6) { left: 85%; animation-delay: 3s; animation-duration: 8s; width: 5px; height: 5px; }
-.sparkle:nth-child(7) { left: 15%; animation-delay: 6s; animation-duration: 11s; width: 3px; height: 3px; }
-.sparkle:nth-child(8) { left: 60%; animation-delay: 7s; animation-duration: 10s; width: 4px; height: 4px; }
-.sparkle:nth-child(9) { left: 20%; animation-delay: 8s; animation-duration: 12s; width: 3px; height: 3px; }
-.sparkle:nth-child(10) { left: 50%; animation-delay: 3s; animation-duration: 9s; }
-.sparkle:nth-child(11) { left: 75%; animation-delay: 5s; animation-duration: 11s; width: 4px; height: 4px; }
-.sparkle:nth-child(12) { left: 90%; animation-delay: 9s; animation-duration: 10s; width: 5px; height: 5px; }
 
 @keyframes floatUp {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  10% { opacity: 1; }
-  30% { opacity: 0.8; transform: translateY(70vh) scale(1.2); }
-  70% { opacity: 0.3; }
-  100% { transform: translateY(-10vh) scale(0.3); opacity: 0; }
+  0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+  8% { opacity: 1; }
+  25% { transform: translateY(75vh) translateX(18px) scale(1.4); }
+  50% { transform: translateY(50vh) translateX(-12px) scale(1); opacity: 0.9; }
+  75% { transform: translateY(25vh) translateX(10px) scale(0.7); opacity: 0.4; }
+  100% { transform: translateY(-10vh) translateX(0) scale(0.2); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sparkle { animation: none; display: none; }
+}
+@media (max-width: 480px) {
+  .sparkle {
+    box-shadow: 0 0 3px 1px rgba(255, 213, 79, 0.35);
+  }
 }
 
 /* ====== Header ====== */
@@ -258,7 +261,7 @@ body {
   padding: 1.6rem 1rem;
   text-decoration: none;
   color: var(--text);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
   position: relative;
   overflow: hidden;
   animation: cardPopIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
@@ -286,11 +289,12 @@ body {
   transform: scaleX(0);
   transition: transform 0.35s ease;
 }
-.category-card:hover {
+.category-card:hover, .category-card:active {
   border-color: var(--dora-yellow);
   transform: translateY(-6px);
   box-shadow: 0 12px 32px rgba(30,144,255,0.18), 0 0 0 3px rgba(255,193,7,0.12);
 }
+.category-card:active { transform: translateY(-2px) scale(0.98); }
 .category-card:focus-visible {
   outline: 3px solid var(--dora-yellow);
   outline-offset: 3px;
@@ -349,11 +353,12 @@ body {
 .article-item:nth-child(4) { animation-delay: 0.20s; }
 .article-item:nth-child(5) { animation-delay: 0.25s; }
 
-.article-item:hover {
+.article-item:hover, .article-item:active {
   background: #FFFDE7;
   border-left-color: var(--dora-yellow);
   transform: translateX(4px);
 }
+.article-item:active { opacity: 0.85; }
 .article-item:focus-visible {
   outline: 3px solid var(--dora-yellow);
   outline-offset: 2px;
@@ -449,7 +454,7 @@ body {
   font-family: "Fira Code", "Cascadia Code", Consolas, monospace;
   font-size: 0.88em;
 }
-.article-content :not(pre) > code {
+.article-content code.inline-code, .article-content :not(pre) > code {
   background: #F0F4FF;
   padding: 0.15em 0.45em;
   border-radius: 4px;
@@ -465,6 +470,7 @@ body {
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
   margin: 1.2rem 0;
   border-radius: 8px;
   box-shadow: 0 1px 6px rgba(0,0,0,0.06);
@@ -550,6 +556,9 @@ body {
 }
 
 /* ====== Responsive ====== */
+@media (max-width: 1024px) {
+  .card-grid { grid-template-columns: repeat(4, 1fr); }
+}
 @media (max-width: 768px) {
   .card-grid { grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
   .site-main { width: 94%; margin: 2rem auto 1.5rem; padding: 1.8rem 1.2rem 1.5rem; }
@@ -563,23 +572,19 @@ body {
   .site-main { width: 96%; margin: 1.5rem auto 1rem; padding: 1.4rem 1rem 1.2rem; border-radius: 14px 14px 12px 12px; }
   .site-main::after { top: 10px; right: 10px; width: 8px; height: 8px; }
   .site-header { padding: 1.2rem 1rem 1.4rem; }
-  .site-header a { font-size: 1.3rem; }
+  .site-header a { font-size: 1.5rem; }
   .header-bell { width: 30px; height: 30px; }
   .header-collar { height: 20px; }
   .tail-scroll-top { bottom: 1.25rem; right: 1.25rem; width: 42px; height: 42px; }
+  body { line-height: 1.6; }
+  .article-content pre { font-size: 0.95rem; }
+  .category-card { padding: 1.2rem 0.8rem; }
 }
 </style>
 </head>
 <body>
 
-<div class="sparkles" aria-hidden="true">
-  <div class="sparkle"></div><div class="sparkle"></div>
-  <div class="sparkle"></div><div class="sparkle"></div>
-  <div class="sparkle"></div><div class="sparkle"></div>
-  <div class="sparkle"></div><div class="sparkle"></div>
-  <div class="sparkle"></div><div class="sparkle"></div>
-  <div class="sparkle"></div><div class="sparkle"></div>
-</div>
+<div class="sparkles" id="sparkles" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="header-collar" aria-hidden="true">
@@ -602,6 +607,30 @@ body {
 <button class="tail-scroll-top" id="tailTop" aria-label="回到顶部" title="回到顶部 — 哆啦A梦的尾巴"></button>
 
 <script>
+(function initSparkles() {
+  const container = document.getElementById('sparkles');
+  if (!container) return;
+  const isMobile = window.innerWidth <= 480;
+  const count = isMobile ? 15 : 30;
+  const minSize = isMobile ? 3 : 4;
+  const maxSize = isMobile ? 6 : 12;
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    const size = minSize + Math.random() * (maxSize - minSize);
+    el.style.left = (Math.random() * 100).toFixed(2) + '%';
+    el.style.width = size.toFixed(2) + 'px';
+    el.style.height = size.toFixed(2) + 'px';
+    el.style.animationDelay = (Math.random() * 15).toFixed(2) + 's';
+    el.style.animationDuration = (8 + Math.random() * 10).toFixed(2) + 's';
+    frag.appendChild(el);
+  }
+  container.appendChild(frag);
+})();
+
+let appEl = null;
+
 if (typeof marked === 'undefined' || typeof marked.parse !== 'function' || typeof marked.setOptions !== 'function') {
   document.getElementById('app').textContent = '页面核心组件加载失败，请刷新重试。';
   throw new Error('marked.js not loaded or API incompatible');
@@ -613,6 +642,7 @@ marked.use({
       html = html.replace(/<a /g, '<a target="_blank" rel="noopener" ');
       html = html.replace(/<table>/g, '<div class="table-scroll"><table>');
       html = html.replace(/<\/table>/g, '</table></div>');
+      html = html.replace(/<img /g, '<img loading="lazy" ');
       return html;
     }
   }
@@ -684,7 +714,7 @@ function renderHome() {
     html += '<div class="cat-count">' + count + ' 篇</div></a>';
   });
   html += '</div>';
-  document.getElementById('app').innerHTML = html;
+  appEl.innerHTML = html;
 }
 
 function escapeHtml(str) {
@@ -710,20 +740,23 @@ function renderCategory(category) {
     });
     html += '</div>';
   }
-  document.getElementById('app').innerHTML = html;
+  appEl.innerHTML = html;
 }
 
 let articleRequestId = 0;
 
 async function renderArticle(category, id) {
   const article = articles.find(a => a.category === category && a.id === id);
-  if (!article) { document.getElementById('app').innerHTML = '<p>文章未找到</p>'; return; }
+  if (!article) { appEl.innerHTML = '<p>文章未找到</p>'; return; }
   const requestId = ++articleRequestId;
   let html = '<nav aria-label="breadcrumb" class="breadcrumb"><a href="#/">首页</a><span>&rsaquo;</span>';
   html += '<a href="' + buildCategoryUrl(category) + '">' + escapeHtml(getCategoryName(category)) + '</a>';
   html += '<span>&rsaquo;</span>' + escapeHtml(article.title) + '</nav>';
   try {
-    const resp = await fetch(article.file);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const resp = await fetch(article.file, { signal: controller.signal });
+    clearTimeout(timeoutId);
     if (!resp.ok) throw new Error('Failed to load article: ' + article.file + ' (HTTP ' + resp.status + ')');
     if (requestId !== articleRequestId) return;
     const md = await resp.text();
@@ -734,7 +767,7 @@ async function renderArticle(category, id) {
     html += '<p>文章加载失败，请稍后重试。</p>';
   }
   if (requestId !== articleRequestId) return;
-  document.getElementById('app').innerHTML = html;
+  appEl.innerHTML = html;
 }
 
 function route() {
@@ -743,7 +776,7 @@ function route() {
     case 'home': renderHome(); break;
     case 'category': renderCategory(r.category); break;
     case 'article': renderArticle(r.category, r.id); break;
-    default: document.getElementById('app').innerHTML = '<p>页面未找到</p>';
+    default: appEl.innerHTML = '<p>页面未找到</p>';
   }
 }
 
@@ -751,22 +784,22 @@ function safeRoute() {
   try { route(); }
   catch (e) {
     console.error('Route error:', e);
-    document.getElementById('app').innerHTML = '<p>页面渲染失败，请刷新重试。</p>';
+    appEl.innerHTML = '<p>页面渲染失败，请刷新重试。</p>';
   }
 }
 
 window.addEventListener('hashchange', safeRoute);
 window.addEventListener('unhandledrejection', function(e) {
   console.error('Unhandled promise rejection:', e.reason);
-  var app = document.getElementById('app');
-  if (app) app.innerHTML = '<p>发生未知错误，请刷新重试。</p>';
+  if (appEl) appEl.innerHTML = '<p>发生未知错误，请刷新重试。</p>';
 });
 window.addEventListener('DOMContentLoaded', async () => {
+  appEl = document.getElementById('app');
   document.getElementById('year').textContent = new Date().getFullYear();
   try { await loadArticles(); }
   catch (e) {
     console.error('loadArticles error:', e);
-    document.getElementById('app').innerHTML = '<p>数据加载失败，请刷新重试。</p>';
+    if (appEl) appEl.innerHTML = '<p>数据加载失败，请刷新重试。</p>';
     return;
   }
   safeRoute();
@@ -774,11 +807,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 /* Red Tail — Back to Top */
 (function() {
-  var btn = document.getElementById('tailTop');
-  var ticking = false;
+  const btn = document.getElementById('tailTop');
+  let ticking = false;
 
   function updateVisibility() {
-    var visible = window.scrollY > 400;
+    const visible = window.scrollY > 400;
     btn.classList.toggle('visible', visible);
   }
 
