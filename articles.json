@@ -1,5 +1,45 @@
 [
   {
+    "id": "jvm-class-loading",
+    "title": "JVM 类加载机制：从双亲委派到模块化",
+    "category": "jvm",
+    "file": "jvm/jvm-class-loading.md",
+    "date": "2026-05-11",
+    "summary": "全面梳理 JVM 类加载机制：类生命周期、6 种主动引用与 3 种被动引用、双亲委派模型与三次打破、Tomcat 隔离与 Spring Boot 类加载、JDK 9 JPMS 与 JDK 17 强封装迁移实战。"
+  },
+  {
+    "id": "graceful-shutdown",
+    "title": "Java 技术栈优雅停机：从内核信号到 Netty 的全链路解析",
+    "category": "architecture",
+    "file": "architecture/graceful-shutdown.md",
+    "date": "2026-05-11",
+    "summary": "从 Linux 内核的 sigaction 信号机制出发，逐层解析 JVM ShutdownHook 原理、Spring 容器关闭回调、Dubbo 服务摘除、Netty EventLoop 优雅谢幕的完整链路与设计决策。"
+  },
+  {
+    "id": "jvm-jmm-concurrency",
+    "title": "Java 内存模型与并发编程基础",
+    "category": "jvm",
+    "file": "jvm/jvm-jmm-concurrency.md",
+    "date": "2026-05-11",
+    "summary": "深入解析 JMM 核心概念、happens-before 8 条规则、4 种内存屏障，以及 ConcurrentHashMap 演进、DCL 风险、CAS ABA 问题等生产环境实战视角。"
+  },
+  {
+    "id": "jvm-bytecode-classfile",
+    "title": "JVM 类文件结构与字节码基础",
+    "category": "jvm",
+    "file": "jvm/jvm-bytecode-classfile.md",
+    "date": "2026-05-11",
+    "summary": "从实战视角梳理 Class 文件核心结构，对比 5 种方法调用指令，聚焦生产排查价值。"
+  },
+  {
+    "id": "jvm-gc-collectors",
+    "title": "JVM 垃圾回收：算法与收集器演进",
+    "category": "jvm",
+    "file": "jvm/jvm-gc-collectors.md",
+    "date": "2026-05-11",
+    "summary": "从对象存活判定到 ZGC 并发整理，覆盖 Serial/ParNew/Parallel/CMS/G1/ZGC/Shenandoah 七种收集器，包含内存泄漏模式、CMS/G1 故障排查与低延迟选型决策树。"
+  },
+  {
     "id": "oh-my-openagent-usage-guide",
     "title": "Oh My OpenAgent 场景使用指南",
     "category": "ai",
@@ -62,5 +102,29 @@
     "file": "architecture/dp.md",
     "date": "2022-05-31",
     "summary": "不是讲架构，而是一种比较好用的开发思想。"
+  },
+  {
+    "id": "jvm-memory-structure",
+    "title": "JVM 运行时数据区与对象内存布局",
+    "category": "jvm",
+    "file": "jvm/jvm-memory-structure.md",
+    "date": "2026-05-11",
+    "summary": "从实战视角梳理 HotSpot VM 运行时数据区（程序计数器、虚拟机栈、堆、方法区、直接内存）的职责划分，详解对象内存布局（对象头、Mark Word、指针压缩），覆盖各区域 OOM 排查思路与 JDK 8→17 内存结构演进要点。"
+  },
+  {
+    "id": "jvm-compiler-optimization",
+    "title": "JVM 执行引擎与后端编译优化",
+    "category": "jvm",
+    "file": "jvm/jvm-compiler-optimization.md",
+    "date": "2026-05-11",
+    "summary": "详解 JVM 执行引擎核心：运行时栈帧结构、C1/C2/Graal 三级 JIT 编译器分工与分层编译流程，覆盖逃逸分析、方法内联等后端优化技术，以及 GraalVM 与 Project Loom 对执行引擎的未来影响。"
+  },
+  {
+    "id": "jvm-monitoring-tools",
+    "title": "JVM 监控与故障诊断工具实战",
+    "category": "jvm",
+    "file": "jvm/jvm-monitoring-tools.md",
+    "date": "2026-05-11",
+    "summary": "涵盖线上 JVM 诊断的三层体系：jps/jstat/jstack/jmap/jcmd 命令行工具速查、JFR 持续记录与 JMC 离线分析、Heap/Thread Dump 深度分析，以及虚拟线程诊断与工具选型速查表。"
   }
 ]
