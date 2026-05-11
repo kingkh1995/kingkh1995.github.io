@@ -1,5 +1,13 @@
 [
   {
+    "id": "seata",
+    "title": "Seata 分布式事务：AT/XA/TCC/SAGA 四种模式深度解析",
+    "category": "distributed",
+    "file": "distributed/seata.md",
+    "date": "2026-05-11",
+    "summary": "从 TC/TM/RM 三角色模型出发，深入 AT 模式全局锁与隔离机制、XA 强一致与异步提交陷阱、TCC 三大异常（空回滚/幂等/防悬挂）、SAGA 状态机编排，覆盖 Raft HA 部署与生产调优。"
+  },
+  {
     "id": "jvm-class-loading",
     "title": "JVM 类加载机制：从双亲委派到模块化",
     "category": "jvm",

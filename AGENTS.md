@@ -17,7 +17,7 @@ Personal tech blog ("kaikoo的四次元口袋") published via GitHub Pages. Sing
 ├── techs.md             # Canonical category taxonomy — consult before adding articles
 ├── {category}/          # Markdown articles, one dir per tech category
 │   └── *.md             # Article body only, no front matter
-├── assets/              # Images, ZCOOLKuaiLe.ttf font, static files
+├── assets/              # Images, ZCOOLKuaiLe.woff2 font, static files
 └── .github/workflows/   # GitHub Pages deployment
 ```
 
@@ -70,7 +70,7 @@ Doraemon-themed CSS custom properties in `:root`:
 - `--dora-red` / `--dora-red-dark` — collar/nose/tail
 - `--dora-belly` (#FFFEF9) — content area off-white
 
-Font: ZCOOL KuaiLe (self-hosted `assets/ZCOOLKuaiLe.ttf`) for titles, categories, article h1. Body uses system sans-serif stack.
+Font: ZCOOL KuaiLe (self-hosted `assets/ZCOOLKuaiLe.woff2`) for titles, categories, article h1. Body uses system sans-serif stack.
 
 Responsive card grid: 5-col → 3-col at 768px → 2-col at 480px.
 

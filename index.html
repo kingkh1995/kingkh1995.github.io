@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>kaikoo的四次元口袋</title>
-<link rel="preload" href="assets/ZCOOLKuaiLe.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="assets/ZCOOLKuaiLe.woff2" as="font" type="font/woff2" crossorigin>
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js" crossorigin="anonymous"></script>
 <style>
 @font-face {
@@ -12,7 +12,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('assets/ZCOOLKuaiLe.ttf') format('truetype');
+  src: url('assets/ZCOOLKuaiLe.woff2') format('woff2');
 }
 :root {
   --dora-blue: #1E90FF;
@@ -467,6 +467,18 @@ body {
   padding: 0;
   color: #E0E0E0;
 }
+/* Mermaid diagrams — replace pre blocks with SVG; transparent bg for light article area */
+.article-content .mermaid-rendered {
+  background: transparent;
+  padding: 1rem 0;
+  text-align: center;
+  overflow-x: auto;
+  margin: 1.2rem 0;
+}
+.article-content .mermaid-rendered svg {
+  max-width: 100%;
+  height: auto;
+}
 .table-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -648,6 +660,65 @@ marked.use({
   }
 });
 
+/* ---- Mermaid diagram support (lazy loaded) ---- */
+let _mermaidPromise = null;
+
+function loadMermaid() {
+  if (_mermaidPromise) return _mermaidPromise;
+  if (window.mermaid) {
+    _mermaidPromise = Promise.resolve();
+    return _mermaidPromise;
+  }
+  _mermaidPromise = new Promise(function (resolve, reject) {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+    script.onload = function () {
+      window.mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+      resolve();
+    };
+    script.onerror = function () {
+      _mermaidPromise = null;
+      reject(new Error('Mermaid CDN load failed'));
+    };
+    document.head.appendChild(script);
+  });
+  return _mermaidPromise;
+}
+
+async function renderMermaidBlocks(container, requestId) {
+  var blocks = container.querySelectorAll('pre code.language-mermaid');
+  if (blocks.length === 0) return;
+
+  try { await loadMermaid(); }
+  catch (e) { return; /* CDN failed, keep original code blocks */ }
+
+  if (requestId !== articleRequestId) return; /* navigation occurred, abort */
+
+  var diagrams = [];
+  for (var i = 0; i < blocks.length; i++) {
+    var block = blocks[i];
+    var source = block.textContent.trim();
+    if (!source) continue;
+    var id = 'mermaid-diagram-' + i + '-' + Date.now();
+    diagrams.push({ id: id, source: source, pre: block.parentElement });
+  }
+
+  var results = await Promise.allSettled(diagrams.map(function (d) {
+    return window.mermaid.render(d.id, d.source).then(function (result) {
+      return { element: d.pre, svg: result.svg };
+    });
+  }));
+
+  results.forEach(function (r) {
+    if (r.status === 'fulfilled') {
+      var div = document.createElement('div');
+      div.className = 'mermaid-rendered';
+      div.innerHTML = r.value.svg;
+      r.value.element.replaceWith(div);
+    }
+  });
+}
+
 const CATEGORY_NAMES = {
   'architecture': '架构模式', 'java': 'Java', 'jvm': 'JVM', 'spring': 'Spring',
   'database': '数据库', 'distributed': '分布式', 'computer-basics': '计算机基础',
@@ -768,6 +839,7 @@ async function renderArticle(category, id) {
   }
   if (requestId !== articleRequestId) return;
   appEl.innerHTML = html;
+  renderMermaidBlocks(appEl, requestId);
 }
 
 function route() {
