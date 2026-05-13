@@ -8,6 +8,14 @@
     "summary": "介绍 Kafka 与 RocketMQ 在存储引擎、零拷贝路径和消费模型三个维度上的架构差异，以及这些差异对吞吐、延迟与多 Topic 场景下选型策略的影响。"
   },
   {
+    "id": "rocketmq5x-evolution",
+    "title": "RocketMQ 5.x 技术演进全景解析：从架构革新到分级存储",
+    "category": "mq",
+    "file": "mq/rocketmq5x-evolution.md",
+    "date": "2026-05-13",
+    "summary": "介绍 RocketMQ 5.x 在消费模型（POP 消费）、高可用（Controller 模式/SlaveActingMaster）、通信架构（gRPC+Proxy）、时序消息（Timer 时间轮）、顺序消息和存储引擎（RocksDB/分级存储）六个维度的架构革新。"
+  },
+  {
     "id": "seata",
     "title": "Seata 分布式事务：AT/XA/TCC/SAGA 四种模式深度解析",
     "category": "distributed",

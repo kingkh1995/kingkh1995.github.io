@@ -28,14 +28,14 @@
 
 ## 约定
 
-- **文章标题层级**: 仅 h2–h4，无 h1/h5+
+- **文章标题层级**: 仅 h2–h4，无 h1/h5+。若源文含 h1（通常为文章标题），应直接删除该行，其内容作为 `articles.json` 中 `title` 字段的参考，而非降级为 h2
 - **标点**: 中文全角 `（、，。）；` 英文术语两侧加空格
 - **`articles.json`**: `file` 含 `.md` 后缀，`id` 为文件名（不含 `.md`），`summary` 用客观语气（介绍/说明/描述/概述）
 - **原始文章处理**: 删除导航链接和标题引用块，图片路径改为 `assets/...`，移至对应分类目录
 
 ## 反模式
 
-- 文章不用 h1/h5+、不加 front matter
+- 文章不用 h1/h5+，源文 h1 应删除（非降级为 h2）、不加 front matter
 - `articles.json` 数据插入 innerHTML 必须用 `escapeHtml()`
 - `#tailTop` 不用 `transform` 动画
 - marked.js script 不加 `defer`
