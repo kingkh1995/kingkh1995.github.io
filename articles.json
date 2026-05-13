@@ -1,11 +1,19 @@
 [
   {
+    "id": "kafka-rocketmq-comparison",
+    "title": "Apache Kafka 与 Apache RocketMQ 高吞吐架构全面技术对比报告",
+    "category": "mq",
+    "file": "mq/kafka-rocketmq-comparison.md",
+    "date": "2026-05-13",
+    "summary": "介绍 Kafka 与 RocketMQ 在存储引擎、零拷贝路径和消费模型三个维度上的架构差异，以及这些差异对吞吐、延迟与多 Topic 场景下选型策略的影响。"
+  },
+  {
     "id": "seata",
     "title": "Seata 分布式事务：AT/XA/TCC/SAGA 四种模式深度解析",
     "category": "distributed",
     "file": "distributed/seata.md",
     "date": "2026-05-11",
-    "summary": "从 TC/TM/RM 三角色模型出发，深入 AT 模式全局锁与隔离机制、XA 强一致与异步提交陷阱、TCC 三大异常（空回滚/幂等/防悬挂）、SAGA 状态机编排，覆盖 Raft HA 部署与生产调优。"
+    "summary": "介绍 Seata 四种分布式事务模式（AT、XA、TCC、SAGA）的工作原理、隔离机制与异常处理策略，以及生产环境中的部署方式与调优要点。"
   },
   {
     "id": "jvm-class-loading",
@@ -13,7 +21,7 @@
     "category": "jvm",
     "file": "jvm/jvm-class-loading.md",
     "date": "2026-05-11",
-    "summary": "全面梳理 JVM 类加载机制：类生命周期、6 种主动引用与 3 种被动引用、双亲委派模型与三次打破、Tomcat 隔离与 Spring Boot 类加载、JDK 9 JPMS 与 JDK 17 强封装迁移实战。"
+    "summary": "说明 JVM 类加载机制的流程，包括类生命周期的七个阶段、双亲委派模型及其三次打破的场景，以及 Tomcat、Spring Boot 与 JDK 9 JPMS 在类加载方面的实现方式。"
   },
   {
     "id": "graceful-shutdown",
@@ -21,7 +29,7 @@
     "category": "architecture",
     "file": "architecture/graceful-shutdown.md",
     "date": "2026-05-11",
-    "summary": "从 Linux 内核的 sigaction 信号机制出发，逐层解析 JVM ShutdownHook 原理、Spring 容器关闭回调、Dubbo 服务摘除、Netty EventLoop 优雅谢幕的完整链路与设计决策。"
+    "summary": "描述 Linux 内核信号处理、JVM ShutdownHook、Spring 容器销毁、Dubbo 服务摘除与 Netty 事件循环关闭的完整链路，以及各层级优雅停机的配置方法与常见问题。"
   },
   {
     "id": "jvm-jmm-concurrency",
@@ -29,7 +37,7 @@
     "category": "jvm",
     "file": "jvm/jvm-jmm-concurrency.md",
     "date": "2026-05-11",
-    "summary": "深入解析 JMM 核心概念、happens-before 8 条规则、4 种内存屏障，以及 ConcurrentHashMap 演进、DCL 风险、CAS ABA 问题等生产环境实战视角。"
+    "summary": "说明 JMM 的概念与 happens-before 规则体系，volatile 和 CAS 在 x86 与 ARM 内存模型下的实现差异，以及 ConcurrentHashMap 演进和 CAS ABA 问题的生产案例。"
   },
   {
     "id": "jvm-bytecode-classfile",
@@ -37,7 +45,7 @@
     "category": "jvm",
     "file": "jvm/jvm-bytecode-classfile.md",
     "date": "2026-05-11",
-    "summary": "从实战视角梳理 Class 文件核心结构，对比 5 种方法调用指令，聚焦生产排查价值。"
+    "summary": "介绍 Class 文件的结构（常量池、访问标志、字节码指令集）以及五种方法调用指令的语义差异与使用场景。"
   },
   {
     "id": "jvm-gc-collectors",
@@ -45,7 +53,7 @@
     "category": "jvm",
     "file": "jvm/jvm-gc-collectors.md",
     "date": "2026-05-11",
-    "summary": "从对象存活判定到 ZGC 并发整理，覆盖 Serial/ParNew/Parallel/CMS/G1/ZGC/Shenandoah 七种收集器，包含内存泄漏模式、CMS/G1 故障排查与低延迟选型决策树。"
+    "summary": "概述从 Serial 到 ZGC 七种垃圾收集器的工作原理与演进脉络，各收集器在吞吐量、延迟和内存占用方面的取舍，以及生产环境选型建议与故障排查方法。"
   },
   {
     "id": "oh-my-openagent-usage-guide",
@@ -53,7 +61,7 @@
     "category": "ai",
     "file": "ai/oh-my-openagent-usage-guide.md",
     "date": "2026-05-10",
-    "summary": "Oh My OpenAgent 十大使用场景详解，以及仅 OpenCode Go 订阅下的最佳模型配置实践。"
+    "summary": "介绍 Oh My OpenAgent 十大使用场景及各自在工具调用密度与上下文窗口压力方面的特点，以及 OpenCode Go 订阅下的模型配置优化策略。"
   },
   {
     "id": "jvm-tuning",
@@ -61,7 +69,7 @@
     "category": "jvm",
     "file": "jvm/jvm-tuning.md",
     "date": "2026-05-09",
-    "summary": "JVM 参数速查、GC 收集器选型（G1/ZGC/Shenandoah）、JDK 命令行工具速查、调优流程与现网实战案例，面向有基础的技术开发。"
+    "summary": "说明 JVM 诊断与调优的方法论，涵盖 GC 收集器选型策略、命令行工具、调优流程，以及 G1、ZGC 与 Shenandoah 的参数配置原则与现网实战案例。"
   },
   {
     "id": "claude-code-superpowers-openspec",
@@ -69,7 +77,7 @@
     "category": "ai",
     "file": "ai/claude-code-superpowers-openspec.md",
     "date": "2026-05-09",
-    "summary": "从 Claude Code 到 Superpowers 再到 OpenSpec，逐层拆解三者的核心流程、各自短板，以及如何组合使用让 AI 生成更可靠、更可维护的代码。"
+    "summary": "介绍 Claude Code、Superpowers 与 OpenSpec 三款工具的设计定位与功能互补关系，以及通过工具链组合从 Prompt Engineering 过渡到 Specification Engineering 的方式。"
   },
   {
     "id": "msdp",
@@ -77,7 +85,7 @@
     "category": "architecture",
     "file": "architecture/msdp.md",
     "date": "2026-05-09",
-    "summary": "系统梳理微服务架构中的核心设计模式，涵盖分解、集成、数据库、可观测性和横切关注点五大类别。"
+    "summary": "概述微服务架构中分解、集成、数据库、可观测性与横切关注点五大类设计模式，以及各类模式在服务粒度、通信范式和一致性保障方面的架构决策。"
   },
   {
     "id": "docker",
@@ -85,7 +93,7 @@
     "category": "container",
     "file": "container/docker.md",
     "date": "2026-05-09",
-    "summary": "Docker 命令速查与实战部署，涵盖镜像、容器、网络、卷管理及 Docker Compose。"
+    "summary": "介绍 Docker 基于 Linux 命名空间与 CGroup 的进程级隔离机制、UnionFS 镜像分层的写时复制策略，以及 bridge/host/overlay 三种网络模型的技术特性与适用场景。"
   },
   {
     "id": "tcpdump",
@@ -93,7 +101,7 @@
     "category": "dev-tools",
     "file": "dev-tools/tcpdump.md",
     "date": "2026-05-09",
-    "summary": "tcpdump 与 Wireshark 抓包实战指南，涵盖过滤表达式、TCP 标志位及问题定位。"
+    "summary": "说明 tcpdump 与 Wireshark 的功能与使用技巧，包括 BPF 过滤表达式语法、TCP 标志位分析方法，以及通过抓包定位网络瓶颈和排查应用层故障的实践操作。"
   },
   {
     "id": "ddd",
@@ -101,7 +109,7 @@
     "category": "architecture",
     "file": "architecture/ddd.md",
     "date": "2023-03-21",
-    "summary": "总结自《阿里技术专家详解DDD系列》，涵盖 Domain Primitive、应用架构和架构设计要点。"
+    "summary": "介绍领域驱动设计的概念，Bounded Context 在模型边界界定中的作用，以及 Domain Primitive 将隐式业务约束转化为类型安全值对象的设计方法。"
   },
   {
     "id": "dp",
@@ -109,7 +117,7 @@
     "category": "architecture",
     "file": "architecture/dp.md",
     "date": "2022-05-31",
-    "summary": "不是讲架构，而是一种比较好用的开发思想。"
+    "summary": "说明 Domain Primitive 的设计理念与实现方法，通过将基本类型中的业务规则收敛为自包含的值对象，将校验逻辑从 Service 层剥离到类型系统中。"
   },
   {
     "id": "jvm-memory-structure",
@@ -117,7 +125,7 @@
     "category": "jvm",
     "file": "jvm/jvm-memory-structure.md",
     "date": "2026-05-11",
-    "summary": "从实战视角梳理 HotSpot VM 运行时数据区（程序计数器、虚拟机栈、堆、方法区、直接内存）的职责划分，详解对象内存布局（对象头、Mark Word、指针压缩），覆盖各区域 OOM 排查思路与 JDK 8→17 内存结构演进要点。"
+    "summary": "描述 HotSpot VM 运行时数据区（堆、栈、元空间、直接内存）的职责划分与 OOM 特征，对象内存布局中 Mark Word 的锁升降级机制，以及 JDK 8 到 17 的内存结构演进要点。"
   },
   {
     "id": "jvm-compiler-optimization",
@@ -125,7 +133,7 @@
     "category": "jvm",
     "file": "jvm/jvm-compiler-optimization.md",
     "date": "2026-05-11",
-    "summary": "详解 JVM 执行引擎核心：运行时栈帧结构、C1/C2/Graal 三级 JIT 编译器分工与分层编译流程，覆盖逃逸分析、方法内联等后端优化技术，以及 GraalVM 与 Project Loom 对执行引擎的未来影响。"
+    "summary": "介绍 JVM 执行引擎的运行机制与 C1/C2/Graal 三级 JIT 编译器的分工协作模式，逃逸分析、方法内联等后端优化技术的实现原理，以及 GraalVM 与 Project Loom 对未来执行引擎的影响。"
   },
   {
     "id": "jvm-monitoring-tools",
@@ -133,6 +141,6 @@
     "category": "jvm",
     "file": "jvm/jvm-monitoring-tools.md",
     "date": "2026-05-11",
-    "summary": "涵盖线上 JVM 诊断的三层体系：jps/jstat/jstack/jmap/jcmd 命令行工具速查、JFR 持续记录与 JMC 离线分析、Heap/Thread Dump 深度分析，以及虚拟线程诊断与工具选型速查表。"
+    "summary": "说明线上 JVM 诊断的三层工具体系：命令行工具（jps/jstat/jstack/jmap/jcmd）、JFR 持续记录与 JMC 离线分析、Heap/Thread Dump 深度分析，以及虚拟线程诊断的工具选型建议。"
   }
 ]

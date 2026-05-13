@@ -1,99 +1,65 @@
-# PROJECT KNOWLEDGE BASE
+# AGENTS.md
 
-**Generated:** 2026-05-10
-**Commit:** a1fdc8e
-**Branch:** main
+**Personal tech blog** — Doraemon-themed SPA on GitHub Pages. Push `main` deploys.
 
-## OVERVIEW
-
-Personal tech blog ("kaikoo的四次元口袋") published via GitHub Pages. Single-file SPA with no build step — push to `main` deploys automatically.
-
-## STRUCTURE
+## Structure
 
 ```
-./
-├── index.html           # Entire app: HTML + inline CSS + inline JS (~834 lines)
-├── articles.json        # Article manifest (id, title, category, file, date, summary)
-├── techs.md             # Canonical category taxonomy — consult before adding articles
-├── {category}/          # Markdown articles, one dir per tech category
-│   └── *.md             # Article body only, no front matter
-├── assets/              # Images, ZCOOLKuaiLe.woff2 font, static files
-└── .github/workflows/   # GitHub Pages deployment
+./index.html           # App: HTML + inline CSS + JS (~906 行)
+./articles.json        # 文章清单 (id, title, category, file, date, summary)
+./README.md            # 技术知识图谱 (分类目录权威来源)
+./{category}/*.md      # Markdown 文章 (纯正文，无 front matter)
+./assets/              # 图片、字体等静态资源
+./.github/workflows/   # GitHub Pages 部署
 ```
 
-Category dirs use English lowercase hyphenated names: `ai/`, `architecture/`, `jvm/`, `container/`, `dev-tools/`, etc. Some dirs exist preemptively without articles.
 
-## WHERE TO LOOK
 
-| Task | Location | Notes |
-|------|----------|-------|
-| Add/modify article content | `{category}/{article-id}.md` | No front matter; body only |
-| Register article metadata | `articles.json` | Single source of truth for id, title, date, summary |
-| Choose category for new article | `techs.md` | Section headers map to dir names |
-| Add new category mapping | `index.html` → `CATEGORY_NAMES` + `CATEGORY_ICONS` | Also ensure `techs.md` covers it |
-| Modify site styling/theme | `index.html` inline `<style>` | Doraemon-themed CSS custom properties |
-| Modify routing/rendering | `index.html` inline `<script>` | Hash-based SPA, marked.js for markdown |
-| Deploy | `.github/workflows/static.yml` | Auto-deploys on push to `main` |
+## 关键映射
 
-## CONVENTIONS
+| 事项 | 位置 |
+|------|------|
+| 新增/修改文章 | `{category}/{id}.md` |
+| 注册文章元信息 | `articles.json` (`date` 格式 `YYYY-MM-DD`) |
+| 选择分类 | `README.md` 的 section header → 小写连字符目录名 |
+| 新增分类映射 | `index.html` 中 `CATEGORY_NAMES` + `CATEGORY_ICONS`，同步更新 `README.md` |
+| 修改样式 | `index.html` `<style>` (Doraemon CSS 变量) |
+| 修改路由/渲染 | `index.html` `<script>` (hash SPA, marked.js) |
 
-### Category → Directory Mapping
-- Section header in `techs.md` → English lowercase hyphenated dir name
-- Examples: "AI & 新兴技术" → `ai/`, "容器 & 云原生" → `container/`, "开发工具" → `dev-tools/`
+## 约定
 
-### Article Format
-- Only h2–h4 headings (`##`, `###`, `####`); never h1 or h5+
-- Chinese punctuation（：、，。）；English terms within Chinese prose get a space on each side
-- Use `地` before verbs, `的` before nouns
-- Use `、` for enumeration in Chinese; avoid `、和` — use `A、B 和 C` or `A、B、C`
-- Technical converter/transformer terms: `转换器`, not `转化器`
-- Pattern names: `Builder 模式`, not `build 模式`
+- **文章标题层级**: 仅 h2–h4，无 h1/h5+
+- **标点**: 中文全角 `（、，。）；` 英文术语两侧加空格
+- **`articles.json`**: `file` 含 `.md` 后缀，`id` 为文件名（不含 `.md`），`summary` 用客观语气（介绍/说明/描述/概述）
+- **原始文章处理**: 删除导航链接和标题引用块，图片路径改为 `assets/...`，移至对应分类目录
 
-### Incoming Articles (raw .md from root)
-- Remove navigation links (`# [首页](/blog/)`) and redundant title blockquotes
-- Fix image paths to be relative from root (`assets/...` not `/blog/assets/...`)
-- Move to correct category dir, delete original from root
+## 反模式
 
-## ANTI-PATTERNS (THIS PROJECT)
+- 文章不用 h1/h5+、不加 front matter
+- `articles.json` 数据插入 innerHTML 必须用 `escapeHtml()`
+- `#tailTop` 不用 `transform` 动画
+- marked.js script 不加 `defer`
 
-- **Never use h1 or h5+ in articles** — breaks heading hierarchy
-- **Never add front matter to .md files** — metadata lives only in `articles.json`
-- **Never insert `articles.json` data into innerHTML without `escapeHtml()`** — XSS risk
-- **Never add `transform` animations to `#tailTop`** — conflicts with `bottom`/`opacity` transitions
-- **Do not commit `/docs/` without `-f`** — blocked by `.gitignore`
+## 设计
 
-## DESIGN SYSTEM
+Doraemon 蓝色系 (`--dora-blue*`)、黄色 (`--dora-yellow`)、红色 (`--dora-red`)、肚皮白 (`--dora-belly`)。标题用 ZCOOL KuaiLe 字体。响应式卡片网格：5 列 → 3 列 (768px) → 2 列 (480px)。
 
-Doraemon-themed CSS custom properties in `:root`:
-- `--dora-blue` / `--dora-blue-dark` / `--dora-blue-deep` / `--dora-blue-light` — blue body tones
-- `--dora-yellow` / `--dora-yellow-glow` — bell gold
-- `--dora-red` / `--dora-red-dark` — collar/nose/tail
-- `--dora-belly` (#FFFEF9) — content area off-white
+## 路由
 
-Font: ZCOOL KuaiLe (self-hosted `assets/ZCOOLKuaiLe.woff2`) for titles, categories, article h1. Body uses system sans-serif stack.
+Hash SPA: `#/` 首页 → `#/<category>` 文章列表 → `#/article/<category>/<id>` 文章详情。
 
-Responsive card grid: 5-col → 3-col at 768px → 2-col at 480px.
-
-## ROUTING
-
-Hash-based SPA with three patterns:
-- `#/` → home: category card grid (categories with articles only)
-- `#/<category>` → category page: article list sorted by date desc
-- `#/article/<category>/<id>` → article page: fetches .md, renders via marked.js
-
-## COMMANDS
+## 本地开发
 
 ```bash
-# Local dev
 python -m http.server 8080
-# Test at http://localhost:8080/#/
 ```
 
-## NOTES
+## 注意事项
 
-- Windows Git Bash (msys2): LF→CRLF warnings on commit are harmless
-- Mobile overflow: wide tables auto-wrapped in `.table-scroll`; long inline code needs `word-break: break-all`; blockquotes need `overflow-wrap: break-word`
-- No build step, no dependencies beyond CDN-loaded `marked.js`
-- **marked.js must load synchronously** — do NOT add `defer`; the inline script checks `typeof marked` immediately on execution
-- Background sparkles are JS-injected (not static HTML) with mobile-adaptive count (15 vs 30) and `prefers-reduced-motion` support
-- Performance optimizations in place: font preload, `appEl` DOM cache, fetch timeout via `AbortController`, `loading="lazy"` on article images
+- **marked.js 必须同步加载**（不加 `defer`）
+- **Mermaid 图**懒加载 CDN，文章内容设置后调用 `renderMermaidBlocks()`
+- **文章请求有 8s 超时**，`articleRequestId` 递增模式防止陈旧渲染
+- **背景闪光** JS 注入，移动端 15 个，桌面 30 个，支持 `prefers-reduced-motion`
+- **移动端溢出**: 宽表格自动 `.table-scroll`，长行内代码 `word-break: break-all`
+- **性能**: 字体预加载、`appEl` DOM 缓存、`loading="lazy"`
+- **`.gitignore`** 拦截: `/.idea/`, `/.superpowers/`, `/docs/`, `/.sisyphus/`, `/raw/`

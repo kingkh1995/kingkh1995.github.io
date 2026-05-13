@@ -1,0 +1,642 @@
+# Java 后端技术图谱
+
+## 计算机基础
+
+- 操作系统
+  - 进程 & 线程
+  - 内存管理
+  - 文件系统
+  - CPU 缓存 & 伪共享
+  - 锁 & 同步机制
+- Linux
+  - 性能分析（perf, flame graph）
+  - 内核参数调优（sysctl）
+  - cgroups & namespaces
+  - eBPF
+- 网络
+  - IP / IPv6
+  - TCP
+  - HTTP
+  - HTTPS / SSL / TLS（含 TLS 1.3, mTLS）
+  - HTTP/2, HTTP/3（QUIC）
+  - WebSocket
+  - WebTransport
+  - DNS
+  - ARP
+  - NAT
+  - BGP（基础概念）
+- IO 模型
+- 零拷贝
+- 算法
+  - 时间复杂度 & 空间复杂度
+  - 排序（快排, 归并, 堆排）
+  - 查找（二分, 哈希, BFS/DFS）
+  - 字符串（KMP, Trie）
+  - 图（最短路径, 拓扑排序）
+  - 分布式一致性（Paxos, Raft — 另见"分布式系统"）
+  - 负载均衡算法（轮询, 加权, 最少连接, 一致性哈希）
+- 数据结构
+  - 哈希
+  - 红黑树
+  - B+ 树
+  - LSM 树
+  - Bitmap
+  - 布隆过滤器
+  - 字典树
+  - 跳跃表
+  - 图
+
+## Java 核心
+
+- 集合
+  - 传统集合（List, Set, Map, Queue）
+  - Sequenced Collections（JDK 21）
+- 泛型
+- 注解 & 注解处理器
+- 反射
+- 代理（JDK 动态代理, CGLIB）
+- 异常处理
+- 序列化
+- SPI
+- Stream
+  - Stream Gatherers（JDK 22+）
+- Lambda
+- Optional
+- Text Blocks（JDK 13+）
+- Switch Expressions（JDK 14+）
+- 方法句柄（MethodHandle）
+- 密封类 & 记录类（Record）
+- 模式匹配（instanceof, switch, Record Patterns）
+- String Templates（JDK 21+）
+- IO & NIO
+- 网络通信（BIO/NIO/AIO）
+- HttpClient（JDK 11+）
+- 线程
+  - 线程模型
+  - 线程池
+  - ThreadLocal
+  - 虚拟线程（Virtual Threads, JDK 21）
+- 并发
+  - 机制（synchronized, volatile, CAS）
+  - 锁（ReentrantLock, ReadWriteLock, StampedLock）
+  - 同步工具（Semaphore, CountDownLatch, CyclicBarrier, Phaser, Exchanger）
+  - 容器（ConcurrentHashMap, CopyOnWriteArrayList 等）
+  - AQS
+  - CompletableFuture
+  - 原子类
+  - VarHandle
+  - Flow API（JDK 9+, Reactive Streams）
+  - Structured Concurrency（JDK 21+）
+  - Scoped Values（JDK 21+）
+  - JCTools（高性能并发队列）
+  - Disruptor（无锁环形缓冲区）
+- Vector API（JDK 16+）
+- Foreign Function & Memory API（JDK 22）
+- 正则
+- SQL
+- 国际化
+- 编码加密
+- 模块化（JPMS）
+- Stable Values（JDK 25 预览）
+
+## JVM
+
+- 内存模型（JMM）
+- 内存结构（堆, 栈, 元空间, 直接内存）
+- 类加载
+- 字节码
+- 垃圾回收器
+  - Serial, Parallel, CMS（已废弃）
+  - G1（默认）
+  - ZGC（含分代模式, JDK 21+ 默认）
+  - Shenandoah（含分代模式）
+- 参数调优
+- CDS & AOT
+  - AppCDS
+  - Project Leyden（AOT 类加载 & 链接, JDK 24+）
+  - GraalVM Native Image
+- Lilliput（紧凑对象头, JDK 24+）
+- 命令行工具
+  - jps, jstat, jinfo, jmap, jstack, jcmd
+  - top -H, vmstat, iostat, perf
+  - Arthas
+- GUI 工具
+  - MAT（dump 分析）
+  - JProfiler（付费）
+  - JVisualVM（JDK 已不再自带）
+  - JConsole（JDK 自带，仅查看）
+- 其他工具
+  - JFR（JDK 内置，记录事件）
+  - JMC（分析 .jfr 文件）
+  - JMX
+  - JMH
+  - async-profiler
+- Java Agent
+
+## 设计模式 & 编程范式
+
+- GoF 23
+  - 创建型：Factory, Abstract Factory, Builder, Prototype, Singleton
+  - 结构型：Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy
+  - 行为型：Chain of Responsibility, Command, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor
+- DDD（领域驱动设计）
+- CQRS
+- Event Sourcing
+- Clean Architecture / 六边形架构
+- Reactive Programming（Reactor, RxJava, Reactive Streams）
+- Functional Programming（Java Stream, Vavr）
+- 事件驱动架构（EDA）
+
+## 数据存储
+
+- 关系型
+  - MySQL
+  - PostgreSQL
+  - Oracle
+- 文档型
+  - MongoDB
+- KV
+  - Redis
+  - Valkey（Redis 开源分支）
+- 列式 / OLAP
+  - ClickHouse
+  - Apache Doris / StarRocks
+  - DuckDB（嵌入式 OLAP）
+- 搜索引擎
+  - Elasticsearch
+  - OpenSearch
+  - Apache Lucene
+- 图
+  - Neo4j
+- 时序
+  - TimescaleDB
+  - InfluxDB
+- 嵌入式
+  - RocksDB
+  - SQLite
+- 向量数据库
+  - Milvus
+  - Qdrant
+  - pgvector（PostgreSQL 扩展）
+- NewSQL / 分布式
+  - TiDB
+  - OceanBase
+- 数据湖格式
+  - Apache Iceberg
+  - Apache Hudi
+  - Delta Lake
+- 查询引擎
+  - Trino（分布式 SQL）
+- 客户端
+  - Druid
+  - HikariCP
+  - Jedis / Lettuce / Redisson
+- 中间件
+  - ShardingSphere（分库分表）
+  - Mycat
+  - ProxySQL（MySQL 连接池 & 路由）
+  - Vitess（MySQL 水平扩展）
+- 工具
+  - Flyway（数据库迁移）
+  - Liquibase（数据库迁移）
+
+## ORM
+
+- MyBatis
+- MyBatis-Plus
+- Hibernate
+- JOOQ（类型安全 SQL）
+- Querydsl
+- PageHelper
+
+## 缓存
+
+- 本地缓存
+  - Caffeine
+  - Guava Cache
+  - Ehcache
+- 分布式缓存
+  - Redis
+  - Valkey
+  - Redis Stack（含 RediSearch, RedisJSON, RedisTimeSeries, RedisBloom）
+- 缓存模式
+  - Cache-Aside
+  - Read/Write Through
+  - Write Behind
+
+## Spring 核心
+
+- Bean（生命周期, 作用域）
+- IoC & DI
+- AOP
+- JDBC
+- 事务（声明式, 编程式, 传播行为）
+- 自动装配
+- 设计模式（模板, 策略, 工厂 等）
+- Cache
+- Async
+- Scheduler
+- Retry
+- Validator
+- Event
+- Environment
+- SPI
+- JMX
+- Logger
+- Mail
+- EL 表达式
+- 国际化
+- 可观测性（Micrometer, 另见"可观测性"）
+- AOT（Ahead-of-Time 处理, Spring 6+）
+- Problem Details（RFC 7807, Spring 6+）
+- HTTP Interface（@HttpExchange 声明式客户端, Spring 6+）
+- JSpecify 空安全注解（Spring 7+）
+
+## Spring 框架 & 微服务生态
+
+- Spring MVC
+- Spring WebFlux
+- Spring Boot（3.x → 4.x, GraalVM Native Image, CDS, Jakarta EE 11）
+- Spring Data JPA / JDBC / MongoDB / Redis / Elasticsearch
+- Spring Security（6.x → 7.x, 新授权架构）
+- Spring Statemachine（状态机）
+- Spring Batch（批处理）
+- Spring Integration
+- Spring Modulith（模块化）
+- Spring AI（1.0 GA, LLM 集成 & RAG）
+- Spring Pulsar
+- Spring Cloud Alibaba
+  - Nacos（配置中心 & 注册中心）
+  - Seata（分布式事务）
+  - Sentinel（限流 & 断路器）
+  - Sidecar
+  - Dubbo
+- Spring Cloud
+  - Spring Cloud Bus（消息总线）
+  - Spring Cloud Commons（服务注册发现）
+  - Spring Cloud Load Balancer（负载均衡）
+  - Spring Cloud Circuit Breaker（断路器）
+  - Spring Cloud Config（配置中心）
+  - Spring Cloud Consul
+  - Spring Cloud Gateway（网关）
+  - Spring Cloud OpenFeign（RPC）
+  - Micrometer Tracing（链路追踪）
+  - Spring Cloud Stream（消息驱动）
+  - Spring Cloud Data Flow（数据流处理）
+  - Spring Cloud Task
+  - Spring Cloud Function
+
+## 微服务基础设施
+
+- Java 微服务框架（Spring Boot 以外）
+  - Quarkus（GraalVM 原生友好）
+  - Micronaut（编译时 DI, AOT）
+  - Helidon（轻量响应式）
+- 配置中心
+  - Apollo
+  - Nacos
+  - Spring Cloud Config
+  - Consul
+- 注册中心
+  - Nacos
+  - Consul
+  - Eureka
+  - Zookeeper
+- 网关
+  - Spring Cloud Gateway
+  - ShenYu
+  - Apache APISIX
+  - Envoy（七层代理 & 网关）
+- 负载均衡
+  - Nginx
+  - LVS
+  - HAProxy
+- RPC 框架
+  - Dubbo
+  - gRPC（含 gRPC-Web, buf）
+  - OpenFeign
+  - Connect RPC
+- HTTP 服务器
+  - Tomcat
+  - Netty
+  - Vert.x
+  - Undertow
+- 通信客户端
+  - Netty
+  - Vert.x
+  - OkHttp
+  - Java HttpClient
+  - AsyncHttpClient
+- 运行时
+  - Dapr（分布式应用运行时）
+- 任务调度 & 工作流引擎
+  - ElasticJob
+  - XXL-Job
+  - Quartz
+  - ShedLock
+  - Activiti / Flowable
+  - Temporal（持久化工作流引擎）
+
+## 消息 & 流处理
+
+- 消息中间件
+  - RocketMQ
+  - Kafka
+  - RabbitMQ
+  - Apache Pulsar
+  - Redpanda（Kafka 兼容）
+- 流处理
+  - Flink
+  - Kafka Streams / ksqlDB
+  - Spring Cloud Data Flow
+- CDC & 数据集成
+  - Canal（MySQL binlog 订阅）
+  - Debezium（CDC 框架）
+  - Kafka Connect
+- 事件网格
+  - Event Mesh（RocketMQ EventBridge）
+
+## 安全
+
+- 认证 & 授权
+  - OAuth 2.0 / OAuth 2.1
+  - OpenID Connect（OIDC）
+  - SAML
+  - JWT
+  - RBAC & ABAC
+  - Passkeys / WebAuthn
+- 框架
+  - Spring Security（6.x → 7.x）
+  - Spring Authorization Server
+  - Spring Vault
+  - Keycloak
+  - Shiro
+- 加解密
+  - 对称加密（AES, DES, ChaCha20）
+  - 非对称加密（RSA, ECC, EdDSA）
+  - 哈希（SHA, bcrypt, Argon2, scrypt）
+  - KEM（密钥封装机制, JDK 21+）
+- 数据脱敏
+- 请求幂等
+- HTTPS / mTLS
+- Zero Trust 架构基础
+
+## 分布式系统
+
+- 理论
+  - CAP
+  - BASE
+  - 最终一致性
+  - ZAB
+  - Raft
+  - Gossip
+  - 一致性哈希
+- 分布式锁
+  - Redis Redisson
+  - Zookeeper
+  - Etcd
+- 分布式事务
+  - Seata（TCC, AT, Saga）
+  - Saga（编排 /  choreography）
+  - WAL
+  - 本地消息表
+  - Transactional Outbox（发件箱模式）
+- 分布式唯一 ID
+  - Snowflake
+  - Leaf（美团）
+  - UIDGenerator（百度）
+- 分布式缓存（另见"缓存"）
+- 分布式限流
+  - Sentinel
+  - Redis 限流（令牌桶, 漏桶）
+- 分布式容错
+  - 多活（单元化架构）
+  - 优雅关机
+  - 容灾补偿
+  - 熔断 & 降级（Resilience4j, Sentinel）
+- 协调服务
+  - Zookeeper
+  - Etcd
+  - JRaft
+  - Dledger
+- 数据库方案
+  - 读写分离
+  - 分库分表（ShardingSphere, Mycat, Vitess）
+  - 冷热分离
+  - 写合并
+  - 深度分页
+  - 索引优化
+  - 数据同步（Canal, Debezium）
+  - 全局二级索引
+- 多租户
+- 分布式调度（XXL-Job, ElasticJob — 另见"微服务基础设施"）
+
+## 容器 & 云原生
+
+- 容器
+  - Docker
+  - Podman
+  - Docker Compose
+  - Containerd
+- 镜像构建
+  - Buildpacks（Spring Boot Maven/Gradle 插件）
+  - Jib（Java 容器镜像）
+- 编排
+  - Kubernetes（K8s）
+  - Helm
+  - K8s Gateway API
+  - HPA / VPA / KEDA
+- 工具
+  - k9s
+  - kubectx / kubens
+  - DevContainer
+- Service Mesh
+  - Istio（含 Ambient 模式）
+  - Linkerd
+- 可编程数据面
+  - Cilium（eBPF）
+  - Envoy
+- Serverless
+  - 函数计算（AWS Lambda, 阿里云 FC）
+  - Knative
+  - WebAssembly / WASI（边缘计算）
+- CDN
+- 部署策略
+  - 滚动发布
+  - 蓝绿部署
+  - 金丝雀发布
+- IaC
+  - Terraform / OpenTofu
+  - Pulumi
+  - Ansible
+  - Crossplane（控制平面）
+- GraalVM Native Image（云原生编译）
+
+## CI/CD
+
+- Jenkins
+- GitHub Actions
+- GitLab CI
+- ArgoCD（GitOps）
+- Dagger（CI 引擎 SDK）
+- Earthly（Makefile 风格 CI）
+- Woodpecker CI
+- 工具
+  - Renovate / Dependabot（依赖更新）
+  - JReleaser（发布自动化）
+  - Semantic Release（语义化发布）
+  - SonarQube（质量门禁）
+
+## 可观测性
+
+- 规范 & 采集
+  - OpenTelemetry（业界标准）
+  - Micrometer
+- 指标 & 可视化
+  - Prometheus + Grafana
+  - Mimir（长期存储）
+- 链路追踪
+  - SkyWalking
+  - Jaeger
+  - Tempo（Grafana）
+- 日志
+  - ELK（Elasticsearch + Logstash + Kibana）
+  - Loki
+  - OpenObserve
+- 日志框架
+  - SLF4J
+  - Log4j2
+  - Logback
+- 持续 profiling
+  - Pyroscope / Grafana Phlare
+  - async-profiler
+  - JFR + JMC
+- 监控
+  - CAT
+  - JMX
+  - eBPF 可观测性
+
+## 测试 & 代码质量
+
+- 测试框架
+  - JUnit 5
+  - Mockito
+  - AssertJ（流式断言）
+  - Testcontainers（含本地开发, 可重用容器）
+  - ArchUnit（架构测试）
+  - Instancio（测试数据生成）
+- 集成测试
+  - WireMock / MockServer
+  - LocalStack（AWS 模拟）
+  - Playwright for Java（浏览器测试）
+- 性能测试
+  - JMeter
+  - JMH
+  - Gatling
+- 代码质量
+  - SonarQube
+  - SpotBugs
+  - Checkstyle / PMD
+  - Error Prone
+  - JaCoCo（测试覆盖率）
+
+## 序列化 & 数据处理
+
+- JSON
+  - Jackson（含 Jackson 3, Spring Boot 4）
+  - Gson
+  - Fastjson2
+- 二进制
+  - Protobuf
+  - Thrift
+  - Hessian
+  - Avro
+  - MessagePack
+- 列式 & 大数据
+  - Apache Arrow
+  - Apache Parquet
+- 文本处理
+  - Apache POI
+  - EasyExcel
+  - OpenCSV
+  - FreeMarker / Thymeleaf
+  - SnakeYAML / Jackson YAML
+- 图片处理
+  - ZXing
+  - Thumbnails
+
+## API & 文档
+
+- API 设计
+  - RESTful
+  - GraphQL
+  - gRPC-web
+  - RSocket
+  - Connect RPC
+  - AsyncAPI（事件驱动 API）
+  - API 版本管理
+- 文档工具
+  - SpringDoc（OpenAPI 3.1）
+  - Spring REST Docs
+  - OpenAPI Generator
+- 协议工具
+  - buf（Protobuf 管理）
+  - grpc-gateway
+- 调试工具
+  - Postman / Apifox
+  - Bruno
+
+## 开发工具 & 效率
+
+- 构建工具
+  - Maven（含 Maven 4）
+  - Gradle（含 Gradle 8.x, 配置缓存, Java Toolchains）
+  - Maven Wrapper / Gradle Wrapper
+- 版本控制
+  - Git
+- 环境管理
+  - SDKMAN
+  - asdf
+  - DevContainer / DevPod
+- IDE
+  - IntelliJ IDEA
+  - VS Code（含 Java 扩展包）
+- Java 工具库
+  - Lombok
+  - MapStruct
+  - Guava
+  - JWT（jjwt, nimbus-jose-jwt）
+  - JGraphT
+  - Resilience4j
+  - Vavr（函数式工具）
+- 脚本
+  - JBang（Java 脚本）
+  - Bash / Shell
+  - Python
+- AI 辅助开发
+  - GitHub Copilot
+  - Cursor
+  - Amazon Q Developer
+
+## AI & 新兴技术
+
+- Java AI 框架
+  - Spring AI（1.0 GA）
+  - LangChain4j
+  - Semantic Kernel for Java
+- 协议 & 标准
+  - MCP（Model Context Protocol）
+  - A2A（Agent-to-Agent）
+- 应用模式
+  - RAG（检索增强生成）
+  - AI Agent（多智能体编排）
+  - Function Calling
+  - Vibe Coding
+- 向量存储
+  - Milvus / Qdrant / pgvector（详见"数据存储"）
+  - JVector（嵌入式向量库）
+- JVM AI 能力
+  - HAT（异构加速工具包, JDK 25+）
+  - ONNX Runtime Java API
+  - DJL（Deep Java Library）
+  - TensorFlow Java
