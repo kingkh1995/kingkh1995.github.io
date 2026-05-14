@@ -1,5 +1,133 @@
 [
   {
+    "id": "netty-01-foundation",
+    "title": "Netty 导论与网络 IO 模型",
+    "category": "netty",
+    "file": "netty/netty-01-foundation.md",
+    "date": "2026-05-14",
+    "summary": "从 Linux 内核视角理解网络 IO 全流程，推导出 Netty 为何选择 Reactor 模型，并快速上手 Echo 示例，同时介绍生产环境中 Netty 的应用格局。"
+  },
+  {
+    "id": "netty-02-core-components",
+    "title": "Netty 核心组件详解",
+    "category": "netty",
+    "file": "netty/netty-02-core-components.md",
+    "date": "2026-05-14",
+    "summary": "系统掌握 Netty 六大核心组件的接口契约、类层次结构与协作关系，包括 Channel、ChannelHandler、ChannelPipeline、ChannelHandlerContext、EventLoop、Bootstrap。"
+  },
+  {
+    "id": "netty-03-server-bootstrap",
+    "title": "Netty 服务端启动全流程",
+    "category": "netty",
+    "file": "netty/netty-03-server-bootstrap.md",
+    "date": "2026-05-14",
+    "summary": "从源码层面完整走通 Netty 服务端启动链路：Channel 创建 → 初始化 → 注册 → 绑定 → 开始服务，同时对比客户端启动流程。"
+  },
+  {
+    "id": "netty-04-reactor",
+    "title": "Reactor 引擎运转架构",
+    "category": "netty",
+    "file": "netty/netty-04-reactor.md",
+    "date": "2026-05-14",
+    "summary": "深入理解 Netty Reactor 线程的运行框架——事件轮询、IO 处理、异步任务调度的完整协同机制。"
+  },
+  {
+    "id": "netty-05-pipeline",
+    "title": "Pipeline 与 IO 事件编排",
+    "category": "netty",
+    "file": "netty/netty-05-pipeline.md",
+    "date": "2026-05-14",
+    "summary": "深入理解 Pipeline 的双向链表结构、入站/出站事件传播机制、编解码器体系，以及在生产中的最佳实践。"
+  },
+  {
+    "id": "netty-06-bytebuf",
+    "title": "ByteBuf 数据搬运工体系",
+    "category": "netty",
+    "file": "netty/netty-06-bytebuf.md",
+    "date": "2026-05-14",
+    "summary": "系统掌握 ByteBuf 的设计体系——读写分离、堆内堆外、池化、零拷贝、引用计数与扩容机制。"
+  },
+  {
+    "id": "netty-07-memory-pool",
+    "title": "Netty 内存池深度剖析",
+    "category": "netty",
+    "file": "netty/netty-07-memory-pool.md",
+    "date": "2026-05-14",
+    "summary": "从架构到源码深入理解 Netty 内存池的设计——PoolArena、PoolChunk、PoolSubpage、PoolThreadCache 的协作机制，以及仿 Jemalloc 内存管理的实现。"
+  },
+  {
+    "id": "netty-08-reference-counting",
+    "title": "引用计数、内存泄露与对象池",
+    "category": "netty",
+    "file": "netty/netty-08-reference-counting.md",
+    "date": "2026-05-14",
+    "summary": "理解 Netty 的引用计数机制、ResourceLeakDetector 内存泄露探测原理，以及 Recycler 对象池的精妙设计。"
+  },
+  {
+    "id": "netty-09-concurrency",
+    "title": "Netty 并发优化与定时调度",
+    "category": "netty",
+    "file": "netty/netty-09-concurrency.md",
+    "date": "2026-05-14",
+    "summary": "深入理解 FastThreadLocal 的性能优势、时间轮调度器的设计与实现，以及它们在 Netty 并发模型中的实践。"
+  },
+  {
+    "id": "netty-10-lifecycle",
+    "title": "Netty 网络连接全生命周期与生产实践",
+    "category": "netty",
+    "file": "netty/netty-10-lifecycle.md",
+    "date": "2026-05-14",
+    "summary": "系统掌握 Netty 处理网络连接的全生命周期——接收连接、发送/接收数据、连接关闭，以及生产中遇到的典型问题和解决方案。"
+  },
+  {
+    "id": "dubbo-01-foundation",
+    "title": "Dubbo 基础概念与架构",
+    "category": "rpc",
+    "file": "rpc/dubbo-01-foundation.md",
+    "date": "2026-05-14",
+    "summary": "介绍 Dubbo 的发展历程、定位与核心能力，详解分层架构设计、核心角色职责与服务调用全链路，阐述接口级与应用级服务发现机制的演进，以及 RPC 通信的代理生成、序列化、网络传输、线程模型与调用模式。"
+  },
+  {
+    "id": "dubbo-02-quickstart",
+    "title": "Dubbo 快速上手",
+    "category": "rpc",
+    "file": "rpc/dubbo-02-quickstart.md",
+    "date": "2026-05-14",
+    "summary": "介绍 Dubbo 开发环境配置与三种开发模式，详解 triple、dubbo、REST 等通信协议的特性与选型，阐述注册中心（Zookeeper、Nacos、Kubernetes）的集成方案，以及传统 VM、Kubernetes、服务网格三种部署模式。"
+  },
+  {
+    "id": "dubbo-03-core-features",
+    "title": "Dubbo 核心功能",
+    "category": "rpc",
+    "file": "rpc/dubbo-03-core-features.md",
+    "date": "2026-05-14",
+    "summary": "介绍 Dubbo 核心功能，包括服务发现与负载均衡、流量管控（路由、标签、降级）、限流与熔断、可观测性（Metrics/Logging/Tracing）、安全策略（TLS/鉴权/类检查）、序列化机制。"
+  },
+  {
+    "id": "dubbo-04-advanced",
+    "title": "Dubbo 高级特性",
+    "category": "rpc",
+    "file": "rpc/dubbo-04-advanced.md",
+    "date": "2026-05-14",
+    "summary": "讲解 Dubbo 高级特性，包括 RPC 线程模型与 Filter 拦截器链、异步调用与集群容错策略、泛化调用与 SPI 扩展机制，以及分布式事务（Seata AT/TCC/Saga/XA 模式）与 HTTP 网关接入方案。"
+  },
+  {
+    "id": "dubbo-05-operations",
+    "title": "Dubbo 运维与故障排查",
+    "category": "rpc",
+    "file": "rpc/dubbo-05-operations.md",
+    "date": "2026-05-14",
+    "summary": "涵盖 Dubbo 运维与故障排查，包括配置中心（Zookeeper/Nacos/Apollo）与元数据中心、QOS 运维命令与故障诊断方法论、常见问题排查（No Provider/成功率低）、性能调优策略与 GraalVM 原生镜像部署。"
+  },
+  {
+    "id": "dubbo-06-reference",
+    "title": "Dubbo 参考手册",
+    "category": "rpc",
+    "file": "rpc/dubbo-06-reference.md",
+    "date": "2026-05-14",
+    "summary": "Dubbo 参考手册，包含配置项详解（应用/服务/协议/注册中心配置）、SPI 扩展点完整清单、错误码体系（Common/Registry/Router/Protocol/Config 层）、源码模块架构与依赖关系。"
+  },
+  {
     "id": "kafka-rocketmq-comparison",
     "title": "Apache Kafka 与 Apache RocketMQ 高吞吐架构全面技术对比报告",
     "category": "mq",
@@ -16,12 +144,52 @@
     "summary": "介绍 RocketMQ 5.x 在消费模型（POP 消费）、高可用（Controller 模式/SlaveActingMaster）、通信架构（gRPC+Proxy）、时序消息（Timer 时间轮）、顺序消息和存储引擎（RocksDB/分级存储）六个维度的架构革新。"
   },
   {
-    "id": "seata",
-    "title": "Seata 分布式事务：AT/XA/TCC/SAGA 四种模式深度解析",
+    "id": "seata-at-guide",
+    "title": "Seata AT 模式实战：无侵入分布式事务",
     "category": "distributed",
-    "file": "distributed/seata.md",
-    "date": "2026-05-11",
-    "summary": "介绍 Seata 四种分布式事务模式（AT、XA、TCC、SAGA）的工作原理、隔离机制与异常处理策略，以及生产环境中的部署方式与调优要点。"
+    "file": "distributed/seata-at-guide.md",
+    "date": "2026-05-13",
+    "summary": "说明 Seata AT 模式的完整机制，包括数据源代理、全局锁与读写隔离、脏写检测机制和 SQL 限制，并提供生产配置建议。"
+  },
+  {
+    "id": "seata-concept",
+    "title": "Seata 分布式事务：核心概念与原理",
+    "category": "distributed",
+    "file": "distributed/seata-concept.md",
+    "date": "2026-05-13",
+    "summary": "介绍 Seata 分布式事务解决方案的核心概念，包括三大组件（TC/TM/RM）、四大事务模式（AT、XA、TCC、SAGA）概览、分布式事务理论基础（CAP/BASE/2PC）和选型建议。"
+  },
+  {
+    "id": "seata-quickstart",
+    "title": "Seata 快速入门：环境搭建与 Dubbo 示例",
+    "category": "distributed",
+    "file": "distributed/seata-quickstart.md",
+    "date": "2026-05-13",
+    "summary": "介绍 Seata 开发环境搭建步骤，包括数据库准备、Seata Server 启动、Dubbo 微服务集成，以及 @GlobalTransactional 注解的使用方法。"
+  },
+  {
+    "id": "seata-reference",
+    "title": "Seata 参考手册：部署、配置与 API",
+    "category": "distributed",
+    "file": "distributed/seata-reference.md",
+    "date": "2026-05-13",
+    "summary": "介绍 Seata Server 部署、客户端配置、注册中心集成、数据源与 ORM 支持、核心注解与 API 的完整参考，以及常见生产故障排查指南。"
+  },
+  {
+    "id": "seata-tcc-saga-guide",
+    "title": "Seata TCC 与 Saga 模式实战指南",
+    "category": "distributed",
+    "file": "distributed/seata-tcc-saga-guide.md",
+    "date": "2026-05-13",
+    "summary": "说明 Seata TCC 模式（Try/Confirm/Cancel）和 Saga 模式（状态机引擎）的完整实战流程，涵盖接口定义、防悬挂、幂等控制和隔离性处理。"
+  },
+  {
+    "id": "seata-xa-rocketmq-deploy",
+    "title": "Seata XA 模式、RocketMQ 集成与生产部署",
+    "category": "distributed",
+    "file": "distributed/seata-xa-rocketmq-deploy.md",
+    "date": "2026-05-13",
+    "summary": "介绍 Seata XA 模式的强一致事务机制、RocketMQ 事务消息集成方案，以及生产部署实践，包括 TC 集群模式对比和性能调优建议。"
   },
   {
     "id": "jvm-class-loading",
