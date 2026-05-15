@@ -136,12 +136,36 @@
     "summary": "介绍 Kafka 与 RocketMQ 在存储引擎、零拷贝路径和消费模型三个维度上的架构差异，以及这些差异对吞吐、延迟与多 Topic 场景下选型策略的影响。"
   },
   {
+    "id": "mqtt-core-challenges",
+    "title": "MQTT 消息中间件核心技术挑战：百万连接下的架构演进与优化实践",
+    "category": "mq",
+    "file": "mq/mqtt-core-challenges.md",
+    "date": "2026-05-15",
+    "summary": "系统介绍高并发 MQTT Broker 的核心技术挑战与解决方案，涵盖百万连接优化、内存管理、Reactor 线程模型、扇出/扇入分发、QoS 可靠性保障、集群扩展与安全性实践。"
+  },
+  {
+    "id": "mqtt-middleware-comparison",
+    "title": "MQTT 消息中间件主流产品技术对比：EMQX、阿里云 MQTT、RocketMQ-MQTT、ApusicMQ 与 RabbitMQ",
+    "category": "mq",
+    "file": "mq/mqtt-middleware-comparison.md",
+    "date": "2026-05-15",
+    "summary": "从架构设计与适用场景两个维度，对比 EMQX、阿里云微消息队列 MQTT 版、Apache RocketMQ-MQTT、金蝶天燕 ApusicMQ（AMQ）和 RabbitMQ MQTT 插件五款 MQTT 消息中间件的技术特点与选型策略。"
+  },
+  {
     "id": "rocketmq5x-evolution",
     "title": "RocketMQ 5.x 技术演进全景解析：从架构革新到分级存储",
     "category": "mq",
     "file": "mq/rocketmq5x-evolution.md",
     "date": "2026-05-13",
     "summary": "介绍 RocketMQ 5.x 在消费模型（POP 消费）、高可用（Controller 模式/SlaveActingMaster）、通信架构（gRPC+Proxy）、时序消息（Timer 时间轮）、顺序消息和存储引擎（RocksDB/分级存储）六个维度的架构革新。"
+  },
+  {
+    "id": "mqtt-protocol-guide",
+    "title": "MQTT 协议详解：从发布/订阅模型到 QoS 与服务端实战",
+    "category": "mq",
+    "file": "mq/mqtt-protocol-guide.md",
+    "date": "2026-05-15",
+    "summary": "介绍 MQTT 协议的起源、发布/订阅模型与 Topic 通配符机制、报文结构、三级 QoS 服务质量等级、会话持久化、遗嘱消息与保留消息的使用、MQTT 5.0 关键新特性，以及完整的连接交互流程与生产实践建议。"
   },
   {
     "id": "seata-at-guide",

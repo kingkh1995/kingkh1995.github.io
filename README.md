@@ -345,6 +345,13 @@
   - RabbitMQ
   - Apache Pulsar
   - Redpanda（Kafka 兼容）
+  - MQTT
+    - 协议（QoS，Topic，会话，MQTT 5.0）
+    - EMQX
+    - 阿里云微消息队列 MQTT 版
+    - RocketMQ-MQTT
+    - RabbitMQ MQTT 插件
+    - 金蝶天燕 ApusicMQ（AMQ）
 - 流处理
   - Flink
   - Kafka Streams / ksqlDB
