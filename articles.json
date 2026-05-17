@@ -342,5 +342,13 @@
     "file": "jvm/jvm-monitoring-tools.md",
     "date": "2026-05-11",
     "summary": "说明线上 JVM 诊断的三层工具体系：命令行工具（jps/jstat/jstack/jmap/jcmd）、JFR 持续记录与 JMC 离线分析、Heap/Thread Dump 深度分析，以及虚拟线程诊断的工具选型建议。"
+  },
+  {
+    "id": "claude-code-large-codebases-guide",
+    "title": "Claude Code 在大型代码库中的工作原理：最佳实践与入门指南",
+    "category": "ai",
+    "file": "ai/claude-code-large-codebases-guide.md",
+    "date": "2026-05-17",
+    "summary": "介绍 Claude Code 在大规模代码库部署中的成功模式，涵盖代码库导航机制、工具链扩展点（CLAUDE.md/Hooks/Skills/Plugins/MCP/LSP/Subagents）的作用与配置、三种成功部署模式（代码库可导航性、CLAUDE.md 主动维护、组织所有权分配），以及企业级采用的最佳实践。"
   }
 ]

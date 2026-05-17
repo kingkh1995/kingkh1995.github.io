@@ -339,65 +339,68 @@ Explore 帮我找一下这个项目里所有用到 Redis 分布式锁的地方
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
   "agents": {
     "sisyphus": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "max"
-    },
-    "prometheus": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "high"
-    },
-    "metis": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "high"
-    },
-    "momus": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "high"
+      "model": "opencode/qwen3.6-plus-free"
     },
     "atlas": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "high"
+      "model": "opencode/qwen3.6-plus-free"
     },
     "oracle": {
       "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "max"
-    },
-    "explore": {
-      "model": "opencode/minimax-m2.5-free"
+      "variant": "max"
     },
     "librarian": {
-      "model": "opencode/minimax-m2.5-free"
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "explore": {
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "multimodal-looker": {
+      "model": "opencode/qwen3.6-plus-free"
+    },
+    "metis": {
+      "model": "opencode/qwen3.6-plus-free"
+    },
+    "momus": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "variant": "max"
     }
   },
   "categories": {
     "visual-engineering": {
-      "model": "opencode/deepseek-v4-flash-free"
+      "model": "opencode/qwen3.6-plus-free"
     },
     "ultrabrain": {
       "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "max"
+      "variant": "max"
     },
     "deep": {
       "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "high"
+      "variant": "high"
     },
     "artistry": {
-      "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "high"
+      "model": "opencode/qwen3.6-plus-free"
+    },
+    "quick": {
+      "model": "opencode/deepseek-v4-flash-free"
+    },
+    "unspecified-low": {
+      "model": "opencode/deepseek-v4-flash-free"
     },
     "unspecified-high": {
       "model": "opencode/deepseek-v4-flash-free",
-      "reasoningEffort": "high"
-    },
-    "unspecified-low": {
-      "model": "opencode/minimax-m2.5-free"
-    },
-    "quick": {
-      "model": "opencode/minimax-m2.5-free"
+      "variant": "max"
     },
     "writing": {
-      "model": "opencode/deepseek-v4-flash-free"
+      "model": "opencode/qwen3.6-plus-free"
     }
+  },
+  "claude_code": {
+    "agents": false,
+    "commands": false,
+    "hooks": false,
+    "mcp": false,
+    "plugins": false,
+    "skills": false
   }
 }
 ```
