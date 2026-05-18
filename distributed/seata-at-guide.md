@@ -245,6 +245,331 @@ flowchart TB
 - 监控 `undo_log WHERE log_status=1` 的数量并告警
 - 审计所有数据库连接，确保都经过 DataSourceProxy
 
+### 3.1.10 全局锁底层技术实现
+
+#### 3.1.10.1 Lock Key 的生成规则
+
+全局锁的最小粒度是**单行记录**，Lock Key 由三部分组成：
+
+```
+lockKey = resourceId + "^^^" + tableName + "^^^" + pkValue
+```
+
+- `resourceId`：JDBC URL（如 `jdbc:mysql://127.0.0.1:3306/order_db`），用于区分不同数据库实例
+- `tableName`：被操作的表名
+- `pkValue`：主键值（复合主键用逗号拼接，如 `1,2`）
+
+**示例**：
+```
+jdbc:mysql://127.0.0.1:3306/order_db^^^t_order^^^1001
+```
+
+RM 在执行 `UPDATE t_order SET status=1 WHERE id=1001` 时，SQL 解析器提取 WHERE 条件中的主键值，构建 lockKey 上报给 TC。
+
+#### 3.1.10.2 TC 端全局锁的获取流程
+
+```mermaid
+sequenceDiagram
+    participant RM as RM 客户端
+    participant TC as TC Server
+    participant Store as Lock Store (DB/Redis)
+
+    RM->>TC: BranchRegisterRequest(lockKeys=[key1, key2])
+    TC->>Store: acquireLock(branchId, lockKeys)
+    
+    alt 所有锁均可用
+        Store->>Store: INSERT INTO lock_table (或 SETNX Redis)
+        Store-->>TC: 获取成功
+        TC-->>RM: BranchRegisterResponse(success)
+    else 存在冲突
+        Store-->>TC: LockConflictException
+        TC-->>RM: 返回冲突，RM 本地回滚后重试
+    end
+```
+
+TC 端的核心逻辑在 `AbstractLockManager.acquireLock()`：
+
+```java
+// 简化伪代码（io.seata.server.lock.AbstractLockManager）
+public boolean acquireLock(BranchDO branch) {
+    String dbKey = branch.getResourceId();
+    List<LockDO> locks = convertToLockDO(branch);
+    
+    // 1. 检查当前分支是否已持有该锁（可重入）
+    List<LockDO> existing = lockStore.queryLocks(locks);
+    if (isOwnedByCurrentBranch(existing, branch)) {
+        return true;  // 可重入，直接返回
+    }
+    
+    // 2. 检查是否有其他分支持有
+    if (isHeldByOtherBranch(existing)) {
+        throw new LockConflictException("Global lock occupied");
+    }
+    
+    // 3. 插入锁记录（DB模式走 INSERT，Redis模式走 SETNX）
+    lockStore.insertLock(locks);
+    return true;
+}
+```
+
+**关键设计**：
+- **可重入性**：同一分支事务多次修改同一行，不会死锁
+- **原子性**：多个 lockKey 的获取是原子操作，要么全成功，要么全失败
+- **DB 模式**：依赖 `row_key` 的唯一索引，INSERT 冲突即表示锁被占用
+- **Redis 模式**：使用 `SETNX` + Lua 脚本保证原子性，性能更高
+
+#### 3.1.10.3 全局锁的存储模式对比
+
+| 维度 | File 模式 | DB 模式 | Redis 模式 |
+|------|-----------|---------|------------|
+| 适用场景 | 开发/测试 | 生产（中小规模） | 生产（高并发） |
+| 并发能力 | 单节点，无并发 | 依赖 DB 连接池 | 单实例 10w+ QPS |
+| 持久化 | 内存，重启丢失 | 持久化到 MySQL | RDB/AOF 可选 |
+| 集群支持 | ❌ | ✅（需共享 DB） | ✅（Redis Cluster） |
+| 锁超时清理 | 无 | TC 定时任务扫描 | Redis TTL 自动过期 |
+
+**生产推荐**：`--storeMode db --lockMode redis`，事务日志走 DB 保证持久化，全局锁走 Redis 保证性能。
+
+#### 3.1.10.4 全局锁的释放时机
+
+全局锁在以下场景被释放：
+
+| 场景 | 触发方 | 释放时机 |
+|------|--------|----------|
+| 全局提交 | TC | 二阶段提交完成后，异步删除 lock_table |
+| 全局回滚 | TC | 二阶段回滚完成后，立即删除 lock_table |
+| 事务超时 | TC | TimeoutCheck 线程扫描超时事务，主动回滚并释放锁 |
+| RM 异常断开 | TC | 心跳检测失败，清理该 RM 持有的所有锁 |
+
+```sql
+-- TC 端释放锁的 SQL（DB 模式）
+DELETE FROM lock_table 
+WHERE xid = ? AND branch_id = ?;
+
+-- Redis 模式：删除对应的 Hash Key
+DEL seata:lock:{xid}:{branchId}
+```
+
+#### 3.1.10.5 全局锁与本地锁的协调（防死锁设计）
+
+Seata 采用**先本地后全局，冲突释放本地**的策略避免跨层死锁：
+
+```
+正常流程：
+  1. 获取本地行锁（数据库 InnoDB 行锁）
+  2. 执行 SQL，生成 undo_log
+  3. 向 TC 申请全局锁
+  4. 获取成功 → 提交本地事务 → 释放本地锁 + 保持全局锁
+  5. 获取失败 → 回滚本地事务 → 释放本地锁 → sleep → 重试步骤 3
+
+死锁场景（如果设计不当）：
+  TX1: 持有本地锁A，等待全局锁B
+  TX2: 持有本地锁B，等待全局锁A
+  → 跨层死锁，数据库和 TC 都无法感知
+
+Seata 的解法：
+  全局锁获取失败 → 立刻回滚本地事务 → 打破死锁条件
+```
+
+### 3.1.11 AT 模式实战问题
+
+#### 3.1.11.1 全局锁冲突（LockConflictException）
+
+**现象**：
+```
+io.seata.rm.datasource.exec.LockConflictException: 
+  get global lock fail, lockKeys: jdbc:mysql://127.0.0.1:3306/db^^^t_product^^^1
+```
+
+**根因分析**：
+
+| 原因 | 排查方法 | 解决方案 |
+|------|----------|----------|
+| 热点行并发更新 | 查 `lock_table` 中 row_key 对应的 xid | 业务层拆分热点（库存分片） |
+| 全局事务跨度过长 | 查 `global_table` 中 begin_time 距今时长 | 将非核心操作移出 `@GlobalTransactional` |
+| 重试参数过小 | 检查 `client.rm.lock.retry-times` | 适当增大（但注意请求堆积风险） |
+| TC 宕机导致锁未释放 | 查 TC 日志和 `lock_table` 残留记录 | 手动清理残留锁记录 |
+
+**诊断 SQL**：
+```sql
+-- 查看当前持有的全局锁
+SELECT l.row_key, l.xid, l.branch_id, l.table_name, l.pk,
+       g.gmt_create AS global_tx_begin,
+       TIMESTAMPDIFF(SECOND, g.gmt_create, NOW()) AS hold_seconds
+FROM lock_table l
+LEFT JOIN global_table g ON l.xid = g.xid
+WHERE l.table_name = 't_product'
+ORDER BY g.gmt_create;
+
+-- 查看超时的全局事务（超过 60s 未提交）
+SELECT xid, status, gmt_create, application_id
+FROM global_table 
+WHERE status = 1  -- Begin 状态
+  AND TIMESTAMPDIFF(SECOND, gmt_create, NOW()) > 60;
+```
+
+#### 3.1.11.2 UNDO_LOG 膨胀
+
+**现象**：`undo_log` 表占用空间持续增长，二阶段提交后未清理。
+
+**根因**：
+
+| 原因 | 说明 |
+|------|------|
+| TC 宕机 | 二阶段提交指令未送达，UNDO_LOG 残留 |
+| 网络分区 | RM 与 TC 之间网络中断，异步清理失败 |
+| 脏写（log_status=1） | 回滚时发现数据已被修改，标记为 defense 状态 |
+
+**治理方案**：
+```sql
+-- 定期清理已提交的 undo_log（TC 正常时自动清理，此为兜底）
+DELETE FROM undo_log 
+WHERE log_status = 0 
+  AND gmt_create < DATE_SUB(NOW(), INTERVAL 1 DAY);
+
+-- 监控脏写记录
+SELECT xid, branch_id, table_name, log_created
+FROM undo_log 
+WHERE log_status = 1 
+ORDER BY log_created DESC LIMIT 20;
+```
+
+**预防**：
+- 开启 `only-care-update-columns: true` 减少单条 undo_log 体积
+- 定期监控 `undo_log` 表大小，设置告警阈值
+- 审计所有数据库连接，确保无绕过 `DataSourceProxy` 的直连
+
+#### 3.1.11.3 XID 传播丢失
+
+**现象**：
+```
+Could not found global transaction xid = xxx
+io.seata.core.exception.TransactionException: Could not register branch
+```
+
+**根因**：XID 未在微服务间正确传递，分支事务无法关联到全局事务。
+
+**传播链路**：
+```
+TM（发起方）                    RM（参与方）
+  │                               │
+  ├─ RootContext.bind(xid)        │
+  ├─ RPC 调用（Feign/Dubbo）      │
+  │   └─ XID 放入 RPC Context     │
+  │                               ├─ RPC Context 提取 XID
+  │                               ├─ RootContext.bind(xid)
+  │                               └─ 执行本地 SQL（自动注册分支）
+```
+
+**排查 Checklist**：
+1. Feign 是否配置了 `SeataFeignClient` 或 `SeataFeignRequestInterceptor`？
+2. Dubbo 是否引入了 `seata-dubbo` 依赖（自动通过 Filter 传递 XID）？
+3. 异步线程池是否传递了 XID？（`RootContext` 基于 `ThreadLocal`，跨线程需手动传递）
+4. MQ 消费端是否从 Message Header 中提取了 XID？
+
+**异步场景修复**：
+```java
+// 错误：ThreadLocal 无法跨线程
+@GlobalTransactional
+public void asyncProcess() {
+    executor.submit(() -> {
+        // 这里 RootContext.getXID() 为 null！
+        orderMapper.updateStatus(id, 1);
+    });
+}
+
+// 正确：手动传递 XID
+@GlobalTransactional
+public void asyncProcess() {
+    String xid = RootContext.getXID();
+    executor.submit(() -> {
+        RootContext.bind(xid);  // 绑定到子线程
+        try {
+            orderMapper.updateStatus(id, 1);
+        } finally {
+            RootContext.unbind();  // 清理
+        }
+    });
+}
+```
+
+#### 3.1.11.4 长事务导致的锁持有
+
+**现象**：全局事务包含外部 HTTP 调用或人工审批，耗时数秒到数分钟，期间全局锁一直被持有，其他事务无法更新相关行。
+
+**解决方案**：
+
+| 方案 | 适用场景 | 实现方式 |
+|------|----------|----------|
+| 缩短事务边界 | 外部调用可移出事务 | 先执行外部调用，再开启 `@GlobalTransactional` |
+| 改用 Saga 模式 | 长流程业务（审批流） | 使用 `StateMachineEngine` 编排 |
+| 业务层并发控制 | 无法缩短事务 | 用分布式锁或队列串行化 |
+
+```java
+// 错误：外部调用在事务内
+@GlobalTransactional
+public void createOrder(OrderDTO dto) {
+    // 1. 本地 DB 操作（持有全局锁）
+    orderMapper.insert(order);
+    
+    // 2. 外部 HTTP 调用（耗时 3s，锁一直被持有！）
+    paymentClient.pay(dto.getPaymentInfo());
+    
+    // 3. 本地 DB 操作
+    stockMapper.deduct(dto.getProductId(), dto.getQty());
+}
+
+// 正确：外部调用移出事务
+public void createOrder(OrderDTO dto) {
+    // 1. 先执行外部调用
+    paymentClient.pay(dto.getPaymentInfo());
+    
+    // 2. 再开启全局事务（锁持有时间最短）
+    doCreateOrder(dto);
+}
+
+@GlobalTransactional
+private void doCreateOrder(OrderDTO dto) {
+    orderMapper.insert(order);
+    stockMapper.deduct(dto.getProductId(), dto.getQty());
+}
+```
+
+#### 3.1.11.5 分库分表兼容性问题
+
+> 详细指南见专题文章：<a href="#/article/distributed/seata-shardingsphere-guide">Seata AT 模式与 ShardingSphere 分库分表集成实战</a>
+
+**现象**：使用 ShardingSphere 分库分表后，Seata AT 模式出现 `Cannot find table meta` 或 undo_log 生成失败。
+
+**根因**：Seata 的 SQL 解析器需要获取表结构元数据（主键、列类型），分库分表场景下表名被改写（如 `t_order` → `t_order_01`），导致元数据查找失败。更本质的原因是**数据源代理链**的编排错误。
+
+**快速诊断 checklist**：
+
+| 问题 | 排查点 |
+|------|--------|
+| UNDO_LOG 为空 | 检查 `enable-auto-data-source-proxy` 是否为 `false`，确认 DataSourceProxy 包的是物理 DataSource |
+| 元数据异常 | 设置 `table-meta-checker-enable: false` |
+| UNDO_LOG 路由异常 | 将 `undo_log` 配置为广播表 |
+| 分支事务注册失败 | 检查 ShardingSphere 分片执行线程的 XID 传递 |
+
+**包装顺序**（关键）：
+```
+物理DataSource → Seata DataSourceProxy → ShardingSphereDataSource
+```
+
+这是与直觉相反的代理顺序——`DataSourceProxy` 必须包装物理 DataSource，而非包装 `ShardingSphereDataSource`。详见专题文章中的"数据源编排"章节。
+
+#### 3.1.11.6 性能调优建议
+
+| 调优项 | 默认值 | 推荐值 | 说明 |
+|--------|--------|--------|------|
+| `client.rm.async-commit-buffer-limit` | 10000 | 10000 | 二阶段提交异步缓冲，无需调整 |
+| `client.rm.lock.retry-interval` | 10ms | 10-50ms | 热点场景可适当增大间隔 |
+| `client.rm.lock.retry-times` | 30 | 30-100 | 根据业务容忍度调整 |
+| `client.rm.report-success-enable` | true | **false** | 不上报分支成功，减少 RPC 开销 |
+| `transport.enableTcServerBatchSendResponse` | false | **true** | 批量发送响应，减少线头阻塞 |
+| `undo.logSaveDays` | 7 | 3-7 | 根据审计需求调整 |
+
 ### 3.1.9 AT 模式的 SQL 限制
 
 | 限制 | 说明 | 替代方案 |

@@ -168,6 +168,14 @@
     "summary": "介绍 MQTT 协议的起源、发布/订阅模型与 Topic 通配符机制、报文结构、三级 QoS 服务质量等级、会话持久化、遗嘱消息与保留消息的使用、MQTT 5.0 关键新特性，以及完整的连接交互流程与生产实践建议。"
   },
   {
+    "id": "a2a-protocol-multi-agent-collaboration",
+    "title": "A2A 协议与多 Agent 协作：从协议标准到消息中间件集成",
+    "category": "ai",
+    "file": "ai/a2a-protocol-multi-agent-collaboration.md",
+    "date": "2026-05-19",
+    "summary": "介绍 A2A（Agent-to-Agent）协议的核心概念（Agent Card、Task 生命周期、Message/Part、Artifact），对比 A2A 与 MCP 的定位差异，阐述消息中间件在 Agent 协作中的五大核心价值（异步解耦、语义路由、记忆共享、事件驱动、削峰填谷），以及 RocketMQ/Kafka/EventMesh 与 A2A 的集成方案、企业应用案例和未来演进方向（IETF SLIM 协议、Agent 互联网）。"
+  },
+  {
     "id": "seata-at-guide",
     "title": "Seata AT 模式实战：无侵入分布式事务",
     "category": "distributed",
@@ -344,11 +352,43 @@
     "summary": "说明线上 JVM 诊断的三层工具体系：命令行工具（jps/jstat/jstack/jmap/jcmd）、JFR 持续记录与 JMC 离线分析、Heap/Thread Dump 深度分析，以及虚拟线程诊断的工具选型建议。"
   },
   {
+    "id": "mysql-core-concepts",
+    "title": "MySQL 核心概念：InnoDB 存储引擎全面解析",
+    "category": "database",
+    "file": "database/mysql-core-concepts.md",
+    "date": "2026-05-18",
+    "summary": "系统梳理 MySQL（InnoDB 存储引擎）的核心知识体系，涵盖基础架构、数据存储、事务与锁机制、MVCC 多版本并发控制、索引策略、主从复制以及 SQL 优化等关键主题。"
+  },
+  {
+    "id": "seata-shardingsphere-guide",
+    "title": "Seata AT 模式与 ShardingSphere 分库分表集成实战",
+    "category": "distributed",
+    "file": "distributed/seata-shardingsphere-guide.md",
+    "date": "2026-05-18",
+    "summary": "介绍 Seata AT 模式与 ShardingSphere 分库分表同时使用时的整合方案，涵盖数据源代理链原理、ShardingSphere 官方 SPI 集成方式、订单分库分表实战案例，以及数据源代理顺序、undo_log 分片策略、表元数据获取失败等常见问题的解决方案。"
+  },
+  {
     "id": "claude-code-large-codebases-guide",
     "title": "Claude Code 在大型代码库中的工作原理：最佳实践与入门指南",
     "category": "ai",
     "file": "ai/claude-code-large-codebases-guide.md",
     "date": "2026-05-17",
     "summary": "介绍 Claude Code 在大规模代码库部署中的成功模式，涵盖代码库导航机制、工具链扩展点（CLAUDE.md/Hooks/Skills/Plugins/MCP/LSP/Subagents）的作用与配置、三种成功部署模式（代码库可导航性、CLAUDE.md 主动维护、组织所有权分配），以及企业级采用的最佳实践。"
+  },
+  {
+    "id": "spring-core",
+    "title": "Spring 核心知识体系：IOC、DI、AOP、MVC 与事务",
+    "category": "spring",
+    "file": "spring/spring-core.md",
+    "date": "2026-05-18",
+    "summary": "系统梳理 Spring 核心知识体系，涵盖 IOC 容器注解与 Bean 生命周期、DI 依赖注入与循环依赖解决、AOP 代理机制与切入点表达式、Spring MVC 请求处理流程、编程式与声明式事务管理、Spring Data JPA 接口体系以及 Spring Boot 自动装配原理。"
+  },
+  {
+    "id": "algorithm-practice",
+    "title": "海量数据处理与高并发算法实战",
+    "category": "algorithm",
+    "file": "algorithm/algorithm-practice.md",
+    "date": "2026-05-19",
+    "summary": "介绍海量数据处理场景下的核心算法设计，涵盖文件散列分治法、位图法、布隆过滤器、堆排序、前缀树等数据结构的应用，以及 TopK、中位数、去重、频度统计等经典问题的解法与多线程并发算法实战。"
   }
 ]
